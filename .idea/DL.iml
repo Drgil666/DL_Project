@@ -15,6 +15,11 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/app/Operator_network/dataset" />
+      <excludeFolder url="file://$MODULE_DIR$/app/Operator_network/model_save" />
+      <excludeFolder url="file://$MODULE_DIR$/app/data_set" />
+      <excludeFolder url="file://$MODULE_DIR$/app/upload_models" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (py3.10)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
