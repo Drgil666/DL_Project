@@ -1,0 +1,11 @@
+/app/data_set/
+/app/Operator_network/model_save/
+/app/Operator_network/dataset/
+/app/upload_testFile/
+/app/models/
+/app/model_temp/
+/app/DeepOnet/model_save/
+/app/DeepOnet/dataset/
+/DL/settings.py
+/app/upload_models
+/app/upload_testFile

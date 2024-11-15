@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245); /* 设置背景色为灰色 */
+            margin: 0; /* 清除默认的页面边距 */
+            padding: 0; /* 清除默认的页面填充 */
+            display: none; /* 默认隐藏 */
+        }
+
+        /* CSS代码 */
+        #t_d::-webkit-slider-thumb {
+            background-color: #16181c; /* 设置为红色 */
+        }
+
+        #t_d::-moz-range-thumb {
+            background-color: rgb(22, 24, 28); /* 设置为红色 */
+        }
+
+        #t_d::-ms-thumb {
+            background-color: #16181c; /* 设置为红色 */
+        }
+
+        input[type=range].form-range::-webkit-slider-runnable-track {
+            background: #fdfdfd; /* Track background color */
+        }
+
+        /* Custom range slider thumb color */
+        input[type=range].form-range::-webkit-slider-thumb {
+            background: #fbfbfb; /* Thumb color */
+        }
+
+        /* Custom range slider thumb color (Firefox) */
+        input[type=range].form-range::-moz-range-thumb {
+            background: #fbfbfb; /* Thumb color */
+        }
+
+        .mx-lg-custom {
+            margin-left: 10rem !important;
+            margin-right: 10rem !important;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<div class=" shadow-lg p-2 bg-dark text-light fs-5 fw-bold d-flex justify-content-between">
+    <div>
+        <i class="bi bi-stack"></i> Deep Learning
+    </div>
+    <div>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
+    </div>
+</div>
+<div style="display: flex;">
+    <div style="flex: 0 0 75%;" id="chatSection">
+        <div class="container">
+            <div id="chatBox" class="shadow-lg bg-white rounded pb-2 pt-4 px-3 mx-auto my-3">
+                <div id="outputArea" style="overflow-y: auto; overflow-x: hidden;height: 700px;"></div>
+                <div class="input-group mb-2 mx-auto shadow-lg" style="max-width: 700px;">
+                        <textarea class="form-control" id="textInput" rows="1"
+                                  placeholder="Type here..."></textarea>
+                    <button class="btn btn-primary shadow-lg" id="generateBtn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="flex: 0 0 25%;">
+        <form method="POST" enctype="multipart/form-data" id="formSection">
+            {% csrf_token %}
+            <div style="margin: 20px 50px 5px 10px;">
+                <label for="data_type" class="form-label">数据类型 / Data Type</label>
+                <select class="form-select shadow-lg" aria-label="Default select example" name="data_type"
+                        id="data_type">
+                    <option selected value="0">未选择 / not selected</option>
+                    <option value="-1">文本数据（csv，excel）</option>
+                    <option value="1">图像压缩包数据（zip）</option>
+                </select>
+            </div>
+
+            <div style="margin: 30px 50px 5px 10px;">
+                <label for="t_d" class="form-label">耗时短~长</label>
+                <input type="range" class="form-range" min="-1" max="1" step="0.01" name="time_demand" id="t_d">
+            </div>
+
+
+            <div style="margin: 30px 50px 5px 10px;" id="text_data_div">
+                <label for="label">目标标签</label>
+                <input type="text" class="form-control shadow-lg" id="label" name="label">
+            </div>
+            <div style="display: flex; margin: 30px 50px 5px 10px" id="image_data_div">
+                <div style="margin-right: 5px; flex: 1;">
+                    <label for="input1">类别一</label>
+                    <input type="text" class="form-control shadow-lg" id="input1" name="label1">
+                </div>
+                <div style="margin-left: 5px; flex: 1;">
+                    <label for="input2">类别二</label>
+                    <input type="text" class="form-control shadow-lg" id="input2" name="label2">
+                </div>
+            </div>
+            <div style="margin: 30px 50px 10px 10px;">
+                <label for="model_selection">模型选择 / Model Selection</label>
+                <select class="form-select shadow-lg" aria-label="Default select example" name="model_selection"
+                        id="model_selection">
+                    <option selected>未选择 / not selected</option>
+                    <option value="0">CNN 1D</option>
+                    <option value="1">LSTM</option>
+                    {#                        <option value="4">Bidirectional LSTM</option>#}
+                    <option value="2">Transformer</option>
+                    {#                        <option value="3">GRU</option>#}
+                    {#                        <option value="5">TCN</option>#}
+                    {#                        <option value="9">Time Distributed Dense</option>#}
+                    {#                        <option value="6">ResNet 1D</option>#}
+                    {#                        <option value="10">ResNet 50</option>#}
+                    {#                        <option value="11">VGG16</option>#}
+                    {#                        <option value="12">VGG19</option>#}
+                    {#                        <option value="13">Inception V3</option>#}
+                    {#                        <option value="7">MobileNet</option>#}
+                    {#                        <option value="14">MobileNet V2</option>#}
+                    {#                        <option value="15">DenseNet 121</option>#}
+                    {#                        <option value="16">DenseNet 169</option>#}
+                    {#                        <option value="17">DenseNet 201</option>#}
+                    <option value="3">deeponet</option>
+                    <option value="4">mionet</option>
+
+                </select>
+            </div>
+
+            <div style="position: relative; margin: 25px 50px 10px 10px;">
+                <label for="data_File">文件上传 / Data Upload</label>
+                <input class="form-control shadow-lg" type="file" name="data_File" id="data_File"
+                       style="height: 313px;">
+                <i class="bi bi-file-earmark-arrow-up" id="fileIcon"
+                   style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+            </div>
+            <div style="margin: 30px 50px 10px 10px;">
+                <button type="submit" class="btn btn-primary shadow-lg">Upload</button>
+                <button type="button" class="btn btn-primary shadow-lg" name="form1_submit" id="m_r">Submit</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $("body").fadeIn(600);
+        text_interaction()
+        model_recommendation()
+        icons()
+        change()
+        get_username()
+    })
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
+        });
+    }
+
+    function navigateTo() {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = '/navigation/';
+        });
+    }
+
+    function text_interaction() {
+        // Event listener for button click
+        $("#generateBtn").click(function () {
+            let inputText = $("#textInput").val();
+            console.log(inputText)
+            let text_output = ''
+            $.ajax({
+                url: '/get_text/',
+                type: "post",
+                dataType: "json",
+                data: {
+                    text: inputText,
+                }, // 模型参数发送到后端
+                success: function (data) {
+                    $("#textInput").val('');
+                    // 处理后端返回的数据
+                    text_output = data.text_output;
+                    console.log(text_output);
+                    let outputArea = $("#outputArea");
+                    outputArea.css("white-space", "pre-line");
+
+                    // 初始化索引
+                    let index = 0;
+                    let SendDiv = $('<div id="SendDiv" class="row text-left justify-content-end mb-4">' +
+                        '<div class="col p-2 shadow-lg bg-white rounded" style="max-width: 600px;"><span></span></div>' + // 文字内容列
+                        '<div class="col-auto"><i class="bi bi-person-circle"></i></div>' + // 图标列
+                        '</div>');
+                    let messageDiv = $('<div id="messageDiv" class="row text-left mb-4">' +
+                        '<div class="col-auto"><i class="bi bi-chat-left-text-fill mr-2"></i></div>' + // 图标列
+                        '<div class="col p-2 shadow-lg bg-white rounded" style="max-width: 600px;"><span></span></div>' + // 文字内容列
+                        '</div>');
+                    SendDiv.find('span').append(inputText);
+                    outputArea.append(SendDiv);
+                    outputArea.append(messageDiv);
+                    // 设置定时器，每隔一段时间显示下一个字
+                    let interval = setInterval(function () {
+                        // 检查是否已经显示完所有字
+                        if (index < text_output.length) {
+                            // 获取当前要显示的字
+                            let nextChar = text_output.charAt(index);
+                            // 将下一个字添加到输出区域
+                            messageDiv.find('span').append(nextChar);
+                            // 增加索引，以显示下一个字
+                            index++;
+                            // 将滚动位置设置为输出区域的底部
+                            outputArea.scrollTop(outputArea[0].scrollHeight);
+
+                        } else {
+                            // 如果已经显示完所有字，清除定时器
+                            clearInterval(interval);
+
+                        }
+                    }, 10); // 控制字的显示速度，单位为毫秒
+
+                }
+            })
+
+        })
+    }
+
+    function model_recommendation() {
+        $("#m_r").click(function () {
+            let data_type = $("#data_type").val();
+            let t_d = $("#t_d").val();
+            let begin_intro = '';
+            let model_recommendation = '';
+            $.ajax({
+                url: '/model_recommendation/',
+                type: "post",
+                dataType: "json",
+                data: {
+                    data_type: data_type,
+                    time_demand: t_d,
+                }, // 模型参数发送到后端
+                success: function (data) {
+                    // 处理后端返回的数据
+                    model_recommendation = data.model_recommendation;
+                    console.log(begin_intro)
+                    let outputArea = $("#outputArea");
+                    outputArea.css("white-space", "pre-line");
+                    // 初始化索引
+                    let index = 0;
+                    let messageDiv = $('<div id="messageDiv" class="row text-left mb-4">' +
+                        '<div class="col-auto"><i class="bi bi-chat-left-text-fill mr-2"></i></div>' + // 图标列
+                        '<div class="col p-2 shadow-lg bg-white rounded" style="max-width: 600px;"><span></span></div>' + // 文字内容列
+                        '</div>');
+                    outputArea.append(messageDiv);
+                    // 设置定时器，每隔一段时间显示下一个字
+                    let interval = setInterval(function () {
+                        // 检查是否已经显示完所有字
+                        if (index < model_recommendation.length) {
+                            // 获取当前要显示的字
+                            let nextChar = model_recommendation.charAt(index);
+                            // 将下一个字添加到输出区域
+                            messageDiv.find('span').append(nextChar);
+                            // 增加索引，以显示下一个字
+                            index++;
+                            outputArea.scrollTop(outputArea[0].scrollHeight);
+                        } else {
+                            // 如果已经显示完所有字，清除定时器
+                            clearInterval(interval);
+                        }
+                    }, 10); // 控制字的显示速度，单位为毫秒
+                }
+            })
+
+
+        })
+    }
+
+    function icons() {
+        $('#data_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#fileIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
+
+    function change() {
+        $("#image_data_div").hide();
+        $('#data_type').change(function () {
+            let selectedValue = $("#data_type").val();
+            if (selectedValue === "-1") {
+                $("#text_data_div").show();
+                $("#image_data_div").hide();
+            } else if (selectedValue === "1") {
+                $("#text_data_div").hide();
+                $("#image_data_div").show();
+            } else {
+                $("#text_data_div").hide();
+                $("#image_data_div").hide();
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

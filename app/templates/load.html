@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <style>
+        #result-display {
+            font-size: 15px;
+            height: 300px; /* 设置高度，以便出现滚动条 */
+            overflow-y: auto; /* 使用垂直滚动条 */
+            border: 1px solid #ccc; /* 添加边框 */
+            padding: 10px; /* 添加内边距 */
+            border-radius: 10px; /* 示例中设置角的弧度为10像素，你可以根据需要修改 */
+        }
+
+        body {
+            background-color: rgb(245, 245, 245); /* 设置背景色为灰色 */
+            margin: 0; /* 清除默认的页面边距 */
+            padding: 0; /* 清除默认的页面填充 */
+            display: none; /* 默认隐藏 */
+        }
+    </style>
+</head>
+<body>
+<div class=" shadow-lg p-2 bg-dark text-light fs-5 fw-bold d-flex justify-content-between">
+    <div>
+        <i class="bi bi-stack"></i> Deep Learning
+    </div>
+    <div>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
+    </div>
+</div>
+<div style="display: flex;">
+    <div style="flex: 0 0 75%;; display: flex;">
+        <div class="form-control shadow-lg m-lg-5" id="result-display">
+            <!-- 结果将在这里显示 -->
+        </div>
+    </div>
+    <div style="flex: 0 0 25%;">
+        <div style="margin: 20px 50px 10px 10px;">
+            <label for="data_type" class="form-label">数据类型 / Data Type</label>
+            <select class="form-select shadow-lg" aria-label="Default select example" name="data_type"
+                    id="data_type">
+                <option selected value="0">未选择 / not selected</option>
+                <option value="-1">文本数据（csv，excel）</option>
+                <option value="1">图像压缩包数据（zip）</option>
+            </select>
+        </div>
+        <div style="position: relative; margin: 30px 50px 10px 10px;">
+            <div style="margin-top: 50px; ">文件上传 / Data Upload</div>
+            <input class="form-control shadow-lg" type="file" id="data_File" name="data_File" style="height: 300px;">
+            <i class="bi bi-file-earmark-arrow-up" id="fileIcon"
+               style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+        </div>
+        <div style="position: relative; margin: 30px 50px 10px 10px;">
+            <div style="margin-top: 50px; ">模型上传 / Data Upload</div>
+            <input class="form-control shadow-lg" type="file" id="model_File" name="model_File" style="height: 300px;">
+            <i class="bi bi-file-earmark-arrow-up" id="modelIcon"
+               style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+        </div>
+        <div style="margin: 20px 50px 10px 10px;">
+            <button type="submit" class="btn btn-primary shadow-lg" id='btn'>Upload</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    let result = [];
+
+    $(function () {
+        $("body").fadeIn(600);
+        get_result();
+        data_icons();
+        model_icons();
+        get_username()
+
+    });
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
+        });
+    }
+
+    function navigateTo() {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = '/navigation/';
+        });
+    }
+
+    function get_result() {
+        $("#btn").click(function () {
+            // 创建 FormData 对象来存储表单数据
+            let formData = new FormData();
+            let data_type = $("#data_type").val();
+            // 将表单数据添加到 FormData 对象中
+            formData.append('data_File', $('#data_File')[0].files[0]);
+            formData.append('model_File', $('#model_File')[0].files[0]);
+            formData.append('data_type', data_type);
+            $.ajax({
+                url: '/get_result/',
+                type: "post",
+                data: formData, // 将 FormData 对象作为数据发送
+                processData: false, // 不对数据进行处理
+                contentType: false, // 不设置内容类型
+                success: function (data) {
+                    result = data.result;
+                    console.log(result);
+                    $("#result-display").text(result.join(', ')); // 将结果以逗号分隔显示在页面上
+                }
+            });
+        });
+    }
+
+    function data_icons() {
+        $('#data_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#fileIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
+
+    function model_icons() {
+        $('#model_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#modelIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

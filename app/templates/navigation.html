@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245); /* 设置背景色为灰色 */
+            margin: 0; /* 清除默认的页面边距 */
+            padding: 0; /* 清除默认的页面填充 */
+            display: none; /* 默认隐藏 */
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="shadow-lg p-2 bg-dark text-light fs-5 fw-bold d-flex justify-content-between">
+    <div>
+        <i class="bi bi-stack"></i> Deep Learning
+    </div>
+    <div>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
+    </div>
+</div>
+<div class="container mx-auto">
+    <div class="text-center" style="width: 600px; margin-left: auto; margin-right: auto;">
+        <img src="../static/img/satalite1.jpg" alt="Model"
+             style="width: 450px; height: 360px; position: absolute; top: 100px; left: 40px;">
+        <div class="mt-lg-5 mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 单个模型推荐和训练 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/upload/')">模型推荐和训练</button>
+        </div>
+        <div class="mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 加载模型 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/load/')">加载并使用模型</button>
+        </div>
+        <div class="mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 集成学习 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/ensemble/')">多模型集成学习</button>
+        </div>
+        <div class="mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 集成学习 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/parameter_identification/')">
+                参数辨识
+            </button>
+        </div>
+        <div class="mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 集成学习 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/motivation_system_fitting/')">
+                动力学系统建模
+            </button>
+        </div>
+        <div class="mb-lg-5 row justify-content-center shadow-lg">
+            <!-- 个人主页 -->
+            <button class="btn btn-outline-dark btn-lg fw-bold" onclick="navigateTo('/self/')">历史文件</button>
+        </div>
+        <img src="../static/img/satalite2.jpg" alt="Model"
+             style="width: 450px; height: 360px; position: absolute; top: 110px; left: 1225px;">
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("body").fadeIn(600);
+        get_username()
+
+    })
+
+    // 导航到指定页面
+    function navigateTo(url) {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = url;
+        });
+    }
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

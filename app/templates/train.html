@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <script src="../static/js/chart.umd.min.js"></script>
+    <style>
+        .charts-container {
+            display: flex; /* 使用 Flexbox 布局 */
+        }
+
+        .chart-container {
+            width: 600px;
+            height: 400px;
+        }
+
+        .log-container {
+            height: 300px; /* 设置高度，以便出现滚动条 */
+            overflow-y: auto; /* 使用垂直滚动条 */
+            border: 1px solid #ccc; /* 添加边框 */
+            padding: 10px; /* 添加内边距 */
+            border-radius: 10px; /* 示例中设置角的弧度为10像素，你可以根据需要修改 */
+        }
+
+        #log-content {
+            font-size: 15px;
+        }
+
+        body {
+            background-color: rgb(245, 245, 245); /* 设置背景色为灰色 */
+            margin: 0; /* 清除默认的页面边距 */
+            padding: 0; /* 清除默认的页面填充 */
+            display: none; /* 默认隐藏 */
+        }
+
+        #accuracyChart {
+            border: 1px solid #ccc; /* 添加边框 */
+            border-radius: 10px; /* 示例中设置角的弧度为10像素，你可以根据需要修改 */
+        }
+
+        #valChart {
+            border: 1px solid #ccc; /* 添加边框 */
+            border-radius: 10px; /* 示例中设置角的弧度为10像素，你可以根据需要修改 */
+        }
+
+    </style>
+</head>
+<body>
+<div class=" shadow-lg p-2 bg-dark text-light fs-5 fw-bold d-flex justify-content-between">
+    <div>
+        <i class="bi bi-stack"></i> Deep Learning
+    </div>
+    <div>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
+    </div>
+</div>
+<div style="display: flex;">
+    <div style="flex: 0 0 75%;; display: flex;">
+        <div class="container">
+            <h1>Log Viewer</h1>
+            <div id="remaining-time"></div>
+            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                <div id="bar" class="progress-bar" style="width: 0%">0%</div>
+            </div>
+            <div class="log-container shadow-lg bg-white">
+                <!-- 日志显示区域 -->
+                <div id="log-content"></div>
+            </div>
+
+            <div class="charts-container" id="chartDiv">
+                <div id="accuracyChartContainer" class="chart-container">
+                    <canvas id="accuracyChart" width="600" height="400"
+                            style="background-color: white; margin-right: 20px;" class="shadow mt-3"></canvas>
+                </div>
+                <div id="valChartContainer" class="chart-container">
+                    <canvas id="valChart" width="600" height="400" style="background-color: white; margin-left: 20px"
+                            class="shadow mt-3"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div style="flex: 0 0 25%;">
+        <div class="container mt-3">
+            <div style="display: flex; flex-wrap: wrap;">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3 ">
+                        <label for="split" class="form-label">输入训练集占比(%)：</label>
+                        <input type="text" class="form-control shadow-lg" id="split" placeholder="80">
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3 ">
+                        <label for="epochInput" class="form-label">输入 Epoch 值：</label>
+                        <input type="text" class="form-control shadow-lg" id="epochInput" placeholder="100">
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3">
+                        <label for="optimizer" class="form-label">选择优化器：</label>
+                        <select class="form-select shadow-lg" aria-label="Default select example" id="optimizer">
+                            <option selected value="0">Adam</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3">
+                        <label for="stepInput" class="form-label">输入学习率值：</label>
+                        <input type="text" class="form-control shadow-lg" id="stepInput" placeholder="0.01">
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;" id="temp1">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3">
+                        <label for="num_layers" class="form-label">输入隐藏层层数：</label>
+                        <input type="text" class="form-control shadow-lg" id="num_layers" placeholder="2">
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3">
+                        <label for="num_classes" class="form-label">输入分类类数：</label>
+                        <input type="text" class="form-control shadow-lg" id="num_classes" placeholder="2">
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;" id="temp2">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3">
+                        <label for="num_filters" class="form-label">输入卷积核个数：</label>
+                        <input type="text" class="form-control shadow-lg" id="num_filters" placeholder="64">
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3">
+                        <label for="kernel_size" class="form-label">输入卷积核大小：</label>
+                        <input type="text" class="form-control shadow-lg" id="kernel_size" placeholder="2">
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;" id="temp3">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3">
+                        <label for="strides" class="form-label">输入步长：</label>
+                        <input type="text" class="form-control shadow-lg" id="strides" placeholder="1">
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3">
+                        <label for="dropout_rate" class="form-label">输入 Dropout Rate：</label>
+                        <input type="text" class="form-control shadow-lg" id="dropout_rate" placeholder="0.2">
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap;" id="temp4">
+                <div style="flex: 1; margin-right: 10px;">
+                    <div class="mb-3">
+                        <label for="dense_activation" class="form-label">选择输出层激活函数：</label>
+                        <select class="form-select shadow-lg" aria-label="Default select example"
+                                id="dense_activation">
+                            <option selected value='sigmoid'>Sigmoid</option>
+                            <option value='softmax'>Softmax</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="flex: 1; margin-left: 10px;">
+                    <div class="mb-3">
+                        <label for="layer_activation" class="form-label">选择隐藏层激活函数：</label>
+                        <select class="form-select shadow-lg" aria-label="Default select example"
+                                id="layer_activation">
+                            <option selected value='relu'>Relu</option>
+                            <option value='tanh'>Tanh</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="model_name" class="form-label">输入模型名称：</label>
+                <input type="text" class="form-control shadow-lg" id="model_name" placeholder="请输入英文字母">
+            </div>
+
+
+            <button id="btn2" type="submit" class="btn btn-primary shadow-lg">Train</button>
+
+            <!-- 按钮 -->
+            <button id="downloadBtn" class="btn btn-primary">
+                <i class="bi bi-download"></i> 下载模型
+            </button>
+            <div id="accuracy_score"></div>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Training Complete</h5>
+            </div>
+            <div class="modal-body">
+                Training has been completed successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    let epoch = 0;
+    let all_epochs = 0;
+    let logs = [];
+    let left_time = 0;
+    let interval;
+    let accuracy = []
+    let loss = []
+    let val_accuracy = []
+    let val_loss = []
+    let accuracy_score = 0
+    let epoch_list = []
+
+
+    $(function () {
+        $("body").fadeIn(600);
+        $("#chartDiv").hide();
+        $("#downloadBtn").prop("disabled", true);
+        get_username()
+        get_parameter();
+        bindBtn2Event();
+    });
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
+        });
+    }
+
+    function navigateTo() {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = '/navigation/';
+        });
+    }
+
+    function get_parameter() {
+        $("#btn2").click(function () {
+            // 获取用户输入的 epoch 值
+            let epochValue = $("#epochInput").val();
+            let optimizerValue = $("#optimizer").val();
+            let stepValue = $("#stepInput").val();
+            let num_layers = $("#num_layers").val();
+            let num_classes = $("#num_classes").val();
+            let num_filters = $("#num_filters").val();
+            let kernel_size = $("#kernel_size").val();
+            let strides = $("#strides").val();
+            let dropout_rate = $("#dropout_rate").val();
+            let layer_activation = $("#layer_activation").val();
+            let dense_activation = $("#dense_activation").val();
+            let model_name = $("#model_name").val();
+            let split = $("#split").val();
+            // 发送 AJAX 请求到后端
+            $.ajax({
+                url: '/get_parameter/',
+                type: "post",
+                dataType: "json",
+                data: {
+                    epoch: epochValue,
+                    optimizer: optimizerValue,
+                    l_r: stepValue,
+                    num_layers: num_layers,
+                    num_classes: num_classes,
+                    num_filters: num_filters,
+                    kernel_size: kernel_size,
+                    strides: strides,
+                    dropout_rate: dropout_rate,
+                    layer_activation: layer_activation,
+                    dense_activation: dense_activation,
+                    model_name: model_name,
+                    split: split
+                }, // 模型参数发送到后端
+                success: function (data) {
+                    // 处理后端返回的数据
+                    all_epochs = data.epoch;
+                    console.log(all_epochs);
+                    get_data();
+                }
+            });
+        });
+    }
+
+    function get_data() {
+        $.ajax({
+            url: '/get_data/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                epoch = data.epoch;
+                left_time = data.time;
+                logs = data.log;
+                console.log(typeof epoch);
+                BarEvent();
+                show_logs();
+                show_time();
+                // 检查epoch是否等于100，如果是，则显示Modal
+                if (epoch > all_epochs - 1) {
+                    $('#exampleModal').modal('show');
+                    setTimeout(model_data, 1000);
+                    $("#chartDiv").show();
+                    $("#downloadBtn").prop("disabled", false);
+                    downloadBtn()
+                }
+
+            }
+        });
+        if (epoch < all_epochs) {
+            setTimeout(get_data, 100);
+        }
+    }
+
+    function bindBtn2Event() {
+        $("#btn2").click(function () {
+            $.ajax({
+                url: '/train/',
+                type: "post",
+                data: {id: 0}
+            });
+        });
+    }
+
+    function BarEvent() {
+        let progressBar = $("#bar");
+        progressBar.width((epoch / all_epochs * 100) + "%").text(epoch + '/' + all_epochs);
+    }
+
+    function show_logs() {
+        let Container = $("#log-content");
+        let logDiv = $("<div></div>");
+        logs.forEach(function (log) {
+            // 创建一个新的 div 元素来显示这个字典的内容
+            // 遍历字典中的每个键值对
+            let keys = Object.keys(log);
+            for (let i = keys.length - 1; i >= 0; i--) {
+                let key = keys[i];
+                let logItem = $("<p>" + key + ": " + JSON.stringify(log[key]) + "</p>");
+                // 将 logItem 添加到 logDiv 中
+                logDiv.prepend(logItem);
+            }
+        });
+        // 将 logDiv 添加到 logContainer 中
+        Container.html(logDiv);
+    }
+
+    function show_time() {
+        let timebox = $("#remaining-time");
+        if (epoch === 0) {
+            let timeDiv = $("<div>" + "正在处理数据集..." + "</div>");
+            timebox.html(timeDiv);
+        } else {
+            let timeDiv = $("<div>" + "剩余时间（秒）: " + left_time.toString() + "</div>");
+            timebox.html(timeDiv);
+        }
+
+    }
+
+    function model_data() {
+        $.ajax({
+            url: '/model_data/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                accuracy = data.accuracy;
+                loss = data.loss
+                val_accuracy = data.val_accuracy
+                val_loss = data.val_loss
+                accuracy_score = data.accuracy_score
+                epoch_list = data.epoch
+
+                console.log(accuracy);
+                console.log(loss);
+                console.log(val_accuracy);
+                console.log(val_loss);
+                console.log(accuracy_score);
+                let accuracyScoreElement = $("#accuracy_score");
+                accuracyScoreElement.text("准确率: " + accuracy_score);
+                chartEvent()
+                ValchartEvent()
+
+            }
+
+        });
+    }
+
+    function chartEvent() {
+        let ctx = document.getElementById('accuracyChart').getContext('2d');
+        let data = {
+            labels: epoch_list,
+            datasets: [{
+                label: 'accuracy',
+                data: accuracy,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)', // 设置线的颜色
+                tension: 0.1,
+            },
+                {
+                    label: 'loss',
+                    data: loss,
+                    fill: false,
+                    borderColor: 'rgb(192, 75, 75)', // 设置第二条线的颜色
+                    tension: 0.1
+                }
+
+            ]
+
+        };
+        let config = {
+            type: 'line', // 设置图表类型
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Epoch轮次' // 横坐标标签
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Accuracy & Loss %' // 纵坐标标签
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                backgroundColor: 'rgb(253,253,253)' // 设置背景颜色，可以是颜色名、十六进制、RGB、RGBA等格式
+            }
+        };
+        const myChart = new Chart(ctx, config);
+    }
+
+    function ValchartEvent() {
+        let ctx = document.getElementById('valChart').getContext('2d');
+        let data = {
+            labels: epoch_list,
+            datasets: [{
+                label: 'val_accuracy',
+                data: val_accuracy,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)', // 设置线的颜色
+                tension: 0.1,
+            },
+                {
+                    label: 'val_loss',
+                    data: val_loss,
+                    fill: false,
+                    borderColor: 'rgb(192, 75, 75)', // 设置第二条线的颜色
+                    tension: 0.1
+                }
+
+            ]
+
+        };
+        let config = {
+            type: 'line', // 设置图表类型
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Epoch轮次' // 横坐标标签
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'val Accuracy & Loss %' // 纵坐标标签
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                backgroundColor: 'rgb(253,253,254)' // 设置背景颜色，可以是颜色名、十六进制、RGB、RGBA等格式
+
+            }
+        };
+        const myChart = new Chart(ctx, config);
+    }
+
+    function downloadBtn() {
+        $('#downloadBtn').click(function () {
+            // 发起下载模型的请求
+            window.location.href = '/download_model/';
+        });
+    }
+</script>
+
+
+</body>
+</html>

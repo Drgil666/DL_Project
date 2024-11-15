@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">会话超时警告！</h4>
+        <p>您的会话由于长时间未活动而已过期。</p>
+        <hr>
+        <p class="mb-0">请重新登录以继续。</p>
+    </div>
+    <a href="{% url 'index' %}" class="btn btn-primary">重新登陆</a>
+</div>
+</body>
+</html>

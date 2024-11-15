@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/icons/font/bootstrap-icons.css">
+    <script src="../static/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../static/js/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245); /* 设置背景色为灰色 */
+            margin: 0; /* 清除默认的页面边距 */
+            padding: 0; /* 清除默认的页面填充 */
+            display: none; /* 默认隐藏 */
+        }
+
+    </style>
+</head>
+<body>
+<div class=" shadow-lg p-2 bg-dark text-light fs-5 fw-bold d-flex justify-content-between">
+    <div>
+        <i class="bi bi-stack"></i> Deep Learning
+    </div>
+    <div>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
+    </div>
+</div>
+
+<div style="display: flex;">
+
+    <div style="flex: 0 0 75%;; display: flex;">
+        <div class="container">
+            <h1>动力学建模</h1>
+            <div id="plot-container">
+                <!-- 图像将会在这里显示 -->
+            </div>
+        </div>
+
+    </div>
+    <div style="flex: 0 0 25%;">
+        <div style="margin: 30px 50px 5px 10px;" id="text_data_div">
+            <label for="label">test sample number</label>
+            <input type="text" class="form-control shadow-lg" id="label" name="label">
+        </div>
+        <div style="position: relative; margin: 30px 50px 10px 10px;">
+            <label for="data_File">文件上传 / Data Upload</label>
+            <input class="form-control shadow-lg" type="file" name="data_File" id="data_File" style="height: 330px;">
+            <i class="bi bi-file-earmark-arrow-up" id="fileIcon"
+               style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+        </div>
+        <div style="margin: 10px 50px 10px 10px;">
+            <button type="submit" class="btn btn-primary shadow-lg" id='btn'>Upload</button>
+        </div>
+        <span id="result"></span>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Training Complete</h5>
+            </div>
+            <div class="modal-body">
+                Training has been completed successfully.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    let epoch = 0;
+    let left_time = 0;
+    let formula = '';
+    let output_formula = '';
+    let final_parameters = '';
+
+    $(function () {
+        $("body").fadeIn(600);
+        get_username()
+        parameter()
+        btnEvent()
+        btnEvent2()
+        icons()
+    })
+
+    function navigateTo() {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = '/navigation/';
+        });
+    }
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
+        });
+    }
+
+    function parameter() {
+        $("#btn").click(function () {
+            let formData = new FormData();
+            let label = $("#label").val();
+            let data_file = $('#data_File')[0].files[0];
+            formData.append('data_File', data_file);
+            formData.append('label', label);
+            $.ajax({
+                url: '/motivation_system_fitting/',  // Replace with your backend URL
+                type: 'POST',
+                data: formData,
+                processData: false,  // 不对数据进行处理
+                contentType: false,  // 不设置 contentType
+                success: function (response) {
+
+                },
+                error: function () {
+                    $('#message').html('<div class="alert alert-danger" role="alert">Upload failed</div>');
+                }
+            });
+        });
+    }
+
+    function icons() {
+        $('#data_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#fileIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
+
+    function get_data() {
+        $.ajax({
+            url: '/parameter_identification_getdata/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                epoch = data.epoch;
+                left_time = data.time;
+                formula = data.formula;
+                output_formula = data.output_formula
+                final_parameters = data.final_parameters
+                console.log(epoch)
+                BarEvent();
+                show_time();
+                let formulabox = $("#formula");
+                let output_formulabox = $("#output_formula");
+                let final_parametersbox = $("#final_parameters");
+                console.log(output_formula)
+                let formulaDiv = $("<div>" + formula + "</div>");
+                let output_formulaDiv = $("<div>" + output_formula + "</div>");
+                let final_parametersDiv = $("<div>" + final_parameters + "</div>");
+                formulabox.html(formulaDiv);
+                output_formulabox.html(output_formulaDiv);
+                final_parametersbox.html(final_parametersDiv);
+                // 检查epoch是否等于100，如果是，则显示Modal
+                if (epoch > 99) {
+                    $('#exampleModal').modal('show');
+                }
+
+            }
+        });
+        if (epoch < 100) {
+            setTimeout(get_data, 10);
+        }
+    }
+
+    function btnEvent() {
+        $("#btn").click(function () {
+            //get_data()
+            let label = $("#label").val();
+            let formData = new FormData();
+            let data_file = $('#data_File')[0].files[0];
+            formData.append('data_File', data_file);
+            formData.append('label', label);
+            $.ajax({
+                url: '/motivation_system_getdata/',
+                type: "post",
+                data: formData,
+                processData: false,  // 不对数据进行处理
+                contentType: false,  // 不设置 contentType
+                success: function (response) {
+                    var img1 = document.createElement('img');
+                    img1.src = `/static/img/fitting_1_png${label}.png`;
+                    img1.width = 650;  // 设置宽度为200像素
+                    img1.height = 550; // 设置高度为150像素
+                    img1.style.position = 'absolute'; // 设置为绝对定位
+                    img1.style.top = '100px';          // 设置距离顶部100像素
+                    img1.style.left = '25px';          // 设置距离左侧50像素
+                    document.getElementById('plot-container').appendChild(img1);
+                    var img2 = document.createElement('img');
+                    img2.src = `/static/img/fitting_2_png${label}.png`;
+                    img2.width = 650;  // 设置宽度为200像素
+                    img2.height = 550; // 设置高度为150像素
+                    img2.style.position = 'absolute'; // 设置为绝对定位
+                    img2.style.top = '100px';          // 设置距离顶部100像素
+                    img2.style.left = '620px';          // 设置距离左侧50像素
+                    document.getElementById('plot-container').appendChild(img2);
+                    var img3 = document.createElement('img');
+                    img3.src = `/static/img/fitting_table_metrics${label}.png`;
+                    img3.width = 650;  // 设置宽度为200像素
+                    img3.height = 400; // 设置高度为150像素
+                    img3.style.position = 'absolute'; // 设置为绝对定位
+                    img3.style.top = '600px';          // 设置距离顶部100像素
+                    img3.style.left = '325px';          // 设置距离左侧50像素
+                    document.getElementById('plot-container').appendChild(img3);
+                }
+            });
+        });
+    }
+
+    function BarEvent() {
+        let progressBar = $("#bar");
+        progressBar.width((epoch / 100 * 100) + "%").text(epoch + '/' + 100);
+    }
+
+    function show_time() {
+        let timebox = $("#remaining-time");
+        if (epoch === 0) {
+            let timeDiv = $("<div>" + "正在处理数据集..." + "</div>");
+            timebox.html(timeDiv);
+        } else {
+            let timeDiv = $("<div>" + "剩余时间（秒）: " + left_time.toString() + "</div>");
+            timebox.html(timeDiv);
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
