@@ -37,6 +37,8 @@ from sklearn.utils.class_weight import compute_class_weight
 from tensorflow import keras
 
 from app.DeepOnet.train_tang import show1
+from app.Operator_network.Models.deeponet import DeepOnet
+from app.Operator_network.Models.mionet import MIONet
 from app.models import RegistrationForm,CSVFile,MODELFile,IMGFile
 
 # global data
@@ -462,9 +464,27 @@ def model_choice(model_id,input_shape,num_layers,num_classes,num_filters,kernel_
         if model_id == 3:
             print("进来了")
         model_function = model_functions[model_id]
-        model = model_function(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
+        if model_function == 0:
+            # CNN
+            return CNN(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
+                       layer_activation,dense_activation)
+        elif model_function == 1:
+            # LSTM
+            return LsTM(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
+                        layer_activation,dense_activation)
+        elif model_function == 2:
+            # Transformers
+            return Transformer(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
                                layer_activation,dense_activation)
-        return model
+        elif model_function == 3:
+            # deeponet
+            return deeponet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
+                            layer_activation,dense_activation)
+        elif model_function == 4:
+            # mionet
+            return mionet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
+                          layer_activation,dense_activation)
+    # TODO:需要再这里补充模型选择的功能
     else:
         raise ValueError("Invalid model_id: {}".format(model_id))
 
@@ -518,7 +538,7 @@ def model_compile(X_train,X_test,y_train,y_test,model,optimizer_input,l_r_input,
                             verbose=1,
                             callbacks=[callback],class_weight=class_weights)
     elif data_type == 3:
-
+        # TODO:这里的逻辑也需要修改
         model_n = "deeponet_zhouqi_5s_0.005.pth"
         path = os.path.join('app/model_temp/',model_n)
         model.save(path)
@@ -553,12 +573,14 @@ def download_model(request):
 
 def deeponet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
              dense_activation):
-    return 1
+    # TODO:此处需要补充细节
+    return DeepOnet()
 
 
 def mionet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
            dense_activation):
-    return 2
+    # TODO:此处需要补充细节
+    return MIONet()
 
 
 def Mobilenet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
@@ -908,11 +930,11 @@ def upload(request):
         print(data_type)
         user = request.user
         file_name = file.name
-        if data_type == 1:
+        if data_type == -1:
             df = process_uploaded_csv(file)
             csv_file_obj = CSVFile.objects.create(user=user,file=file,file_name=file_name)
             print(df)
-        elif data_type == 2:
+        elif data_type == 1:
             zip_file_obj = IMGFile.objects.create(user=user,file=file,file_name=file_name)
             img_path = process_uploaded_zip(file)
         current_user = request.user
@@ -991,14 +1013,13 @@ def train(request):
         global df,classes,img_path,label1,label2,data_type,model_name
         global accuracy_g,loss_g,val_accuracy_g,val_loss_g,accuracy_score_g
         global optimizer,l_r
-        if data_type == 1:
+        if data_type == -1:
             X_train,X_test,y_train,y_test,input_shape = csv_process(df)
-        elif data_type == 2:
+        elif data_type == 1:
             X_train,X_test,y_train,y_test,input_shape = img_process(img_path,label1,label2)
         # elif data_type == 3:
         model = model_choice(model_selection,input_shape,n_layers,n_classes,n_filters,k_size,step,
                              d_r,l_a,d_a)
-        # TODO:需要修改此处的逻辑
         print(model.summary())
         history,model,y_test,X_test,model_path = model_compile(X_train,X_test,y_train,y_test,model,optimizer,
                                                                l_r,model_name)

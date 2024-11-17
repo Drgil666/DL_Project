@@ -6,6 +6,7 @@
 /app/model_temp/
 /app/DeepOnet/model_save/
 /app/DeepOnet/dataset/
+# 数据库相关配置文件
 /DL/settings.py
 /app/upload_models
 /app/upload_testFile

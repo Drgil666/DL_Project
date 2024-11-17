@@ -125,9 +125,9 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(os.path.dirname(__file__),'static')
 
 STATICFILES_DIRS = (
-    ('css','H:/DL/app/static/css'),
-    ('js','H:/DL/app/static/js'),
-    ('img','H:/DL/app/static/img'),
+    ('css','../DL/app/static/css'),
+    ('js','../DL/app/static/js'),
+    ('img','../DL/app/static/img'),
     # ('upload', 'H:/DL/app/static/upload'),
 )
 
