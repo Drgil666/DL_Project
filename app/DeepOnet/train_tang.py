@@ -15,11 +15,13 @@ from app.DeepOnet.metrics import *
 import pandas as pd
 from django.http import HttpRequest
 
-re=HttpRequest()
+re = HttpRequest()
+
+
 def show1(re,y):
     device = torch.device("cuda:0")
     res = ""
-    y=int(y)
+    y = int(y)
     seed = 12
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -27,7 +29,7 @@ def show1(re,y):
     dt = 0.001
     min_t = 0
     max_t = 3
-    a = np.arange(min_t, max_t, dt)
+    a = np.arange(min_t,max_t,dt)
     lt = a.shape[0]
 
     # data_train = np.load('dataset/data_train_25.npz',allow_pickle=True)
@@ -45,7 +47,7 @@ def show1(re,y):
     #
     model = Model()
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(),lr=0.001)
     # #
     num_epochs = 30000
 
@@ -72,58 +74,60 @@ def show1(re,y):
     # model_path = os.path.join('model_save\\deeponet_25_3s_0.005_lt_%s.pth'%(lt))
     # torch.save(model.state_dict(),model_path)
     # load model
-    model_path1 = 'H:\\DL\\app\\DeepOnet\\model_save\\deeponet_25_3s_0.005_lt_3000.pth'
+    model_path1 = os.path.join('app/DeepOnet/model_save','deeponet_25_3s_0.005_lt_3000.pth')
     model.load_state_dict(torch.load(model_path1))
 
     model.eval()
 
-    data_test = np.load('H:\\DL\\app\\upload_testFile\\data_test_7.npz', allow_pickle=True)
+    data_test = np.load(os.path.join('app/dataset_temp','3DOF_train.npz'),allow_pickle=True)
     t = data_test['t'].astype(np.float32)
     len_t = len(t)
-    trunk_input_test = t.reshape(len_t, 1)
+    trunk_input_test = t.reshape(len_t,1)
     trunk_input_test = trunk_input_test[0:lt:5]
 
-
     branch_input_test = data_test['X'].astype(np.float32)
-    branch_input_test = branch_input_test[y, 0:lt:5]
+    branch_input_test = branch_input_test[y,0:lt:5,0]
+    # branch_input_test = torch.unsqueeze(torch.from_numpy(branch_input_test),dim=0).numpy()
 
     labels_test = data_test['Y'].astype(np.float32)
     labels_test = torch.tensor(labels_test)
-    labels_test = labels_test[y, 0:lt:5]
+    labels_test = labels_test[y,0:lt:5,0]
     # print("branch_input_test.shape",len(branch_input_test))
 
     start_time_test = time.time()
 
     with torch.no_grad():
-        outputs_test = model(branch_input_test, trunk_input_test)
+        outputs_test = model(branch_input_test,trunk_input_test)
     end_time_test = time.time()
-    test_time=end_time_test - start_time_test
+    test_time = end_time_test-start_time_test
 
     # print("Total test time: {:.4f} second".format(test_time))
     # res += f"Total test time: {test_time:.4f} seconds\n"
 
-    l2_error=l2_relative_error(labels_test, outputs_test)
-    mse=mean_squared_error(labels_test, outputs_test)
+    l2_error = l2_relative_error(labels_test,outputs_test)
+    mse = mean_squared_error(labels_test,outputs_test)
 
     data = [
-        ["预测所需时间(秒)", "{:.8f} ".format(test_time)],
-        ["L2相对误差", "{:.8f}".format(l2_error)],
-        ["均方误差", "{:.8f}".format(mse)]
+        ["预测所需时间(秒)","{:.8f} ".format(test_time)],
+        ["L2相对误差","{:.8f}".format(l2_error)],
+        ["均方误差","{:.8f}".format(mse)]
     ]
 
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 推荐使用SimHei字体显示中文
     plt.rcParams['axes.unicode_minus'] = False
     # 可选：将表格保存为图片
-    fig, ax = plt.subplots()
+    fig,ax = plt.subplots()
     ax.axis('off')
-    table=ax.table(cellText=data, cellLoc='center', loc='center')
+    table = ax.table(cellText=data,cellLoc='center',loc='center')
     table.auto_set_font_size(False)  # 关闭自动设置字体大小
     table.set_fontsize(14)  # 设置字体大小为14
-    table.scale(1.2, 1.5)  # 调整表格的行距和列距
+    table.scale(1.2,1.5)  # 调整表格的行距和列距
 
-    filename=f'H:\\DL\\app\\static\\img\\fitting_table_metrics{y}.png'
+    # filename=f'H:\\DL\\app\\static\\img\\fitting_table_metrics{y}.png'
     # 保存为图片
-    plt.savefig(filename, bbox_inches='tight')
+    plt.savefig(os.path.join('app/static/img/'+'fitting_table_metrics'+str(y)+'.png'),bbox_inches='tight')
+
+    # plt.savefig(filename, bbox_inches='tight')
     plt.close()
 
     # print('l2_error is',l2_error)
@@ -131,7 +135,6 @@ def show1(re,y):
 
     # res += f"l2_error is:{l2_error}\n"
     # res += f"mse is:{mse}\n"
-
 
     # save results
     # results = pd.DataFrame(outputs_test.numpy())
@@ -156,37 +159,40 @@ def show1(re,y):
     #
     # # plt.show()
 
-    x_data = np.arange(0, 3, 0.005)
+    x_data = np.arange(0,3,0.005)
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 推荐使用SimHei字体显示中文
     plt.rcParams['axes.unicode_minus'] = False
 
-    plt.figure(figsize=(15, 20))
+    plt.figure(figsize=(15,20))
 
     # plt.subplot(2, 1, 1)
-    plt.plot(x_data, branch_input_test[:], color='r', label='系统输入')
+    plt.plot(x_data,branch_input_test[:],color='r',label='系统输入')
     # plt.title('input data')
     plt.xlabel('时间(s)')
     plt.ylabel('角加速度')
     plt.legend(fontsize='18')
     plt.grid(True)
 
-    filename = f'H:\\DL\\app\\static\\img\\fitting_1_png{y}.png'
+    # filename = f'H:\\DL\\app\\static\\img\\fitting_1_png{y}.png'
     # 保存为图片
-    plt.savefig(filename)
+    # plt.savefig(filename)
+    plt.savefig(os.path.join('app/static/img/'+'fitting_1_png'+str(y)+'.png'))
+
     plt.close()
 
-    plt.figure(figsize=(15, 20))
+    plt.figure(figsize=(15,20))
     # plt.subplot(2, 1, 2)
-    plt.plot(x_data, labels_test[:], label='系统真实响应值')
-    plt.plot(x_data, outputs_test[:], label='预测响应值')
+    plt.plot(x_data,labels_test[:],label='系统真实响应值')
+    plt.plot(x_data,outputs_test[:],label='预测响应值')
     plt.xlabel('时间(s)')
     plt.ylabel('干扰力矩')
     plt.legend(fontsize='18')
     plt.grid(True)
 
-    filename = f'H:\\DL\\app\\static\\img\\fitting_2_png{y}.png'
+    # filename = f'H:\\DL\\app\\static\\img\\fitting_2_png{y}.png'
     # 保存为图片
-    plt.savefig(filename)
+    # plt.savefig(filename)
+    plt.savefig(os.path.join('app/static/img/'+'fitting_2_png'+str(y)+'.png'))
     plt.close()
     # plt.show()
     # 将图像保存为字节流
@@ -200,6 +206,7 @@ def show1(re,y):
     # buffer.close()
     # image_str = base64.b64encode(image_png).decode('utf-8')
     # return image_str,res
+
 
 if __name__ == '__main__':
     show1(1)

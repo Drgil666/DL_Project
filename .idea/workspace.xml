@@ -1,17 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Operator_network/dataset/3DOF_train.npz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_10_24_202410241647.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_11-19-1_202411191726.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_11_7_202411071155.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_11_7_2_202411071258.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_6_7_202406061716.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_6_7_202406061716_o3fWJIv.keras" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/CNN_7_1_1_202407011909.keras" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/ddpg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/ppo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/transformer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ddpg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_pinn_mionet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ppo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ql.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_transformer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/ChnSentiCorp_htl_all_202505291656.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172039_202412060949.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172039_202412060954.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172048_LbQX3nq.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172111.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172148.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/data_set/en.test.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/dataset_temp/3DOF_train.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/dataset/zhenxin_test2.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/fnn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/mionet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/mionet1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/model1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model_save/pinn_zhenxin_data2_12_4e-07_500_35.0s_1.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/DL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DL.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DL/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DeepOnet/dataset/data_test_7.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/dataset/data_test_7.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DeepOnet/dataset/data_train_25.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/dataset/data_train_25.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data_set/example简化_202411302246.csv" beforeDir="false" afterPath="$PROJECT_DIR$/app/data_set/example简化_202411302246.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dataset_temp/3DOF_test.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/dataset_temp/3DOF_test.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dataset_temp/zhouqi_test.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/dataset_temp/zhouqi_test.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" beforeDir="false" afterPath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png22.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/ensemble.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/ensemble.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/fitting.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/fitting.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/load.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/load.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/parameter.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/parameter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/train.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/upload_testFile/data_test_7.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/upload_testFile/data_test_7.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +100,9 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2hEhpkgCY2uZq6yu6fEY7aHUoZr" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -44,11 +111,14 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;H:/DL&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/PycharmProject/DL_before&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
@@ -58,13 +128,17 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="H:\DL\app" />
-      <recent name="H:\DL\app\static\img" />
-      <recent name="H:\DL\app\upload_testFile" />
-      <recent name="H:\DL\app\templates" />
-      <recent name="H:\DL" />
+      <recent name="E:\PycharmProject\DL\app\static\img_backup" />
+      <recent name="E:\PycharmProject\DL\app\pinn_mionet" />
+      <recent name="E:\PycharmProject\DL\app\pinn_mionet\config" />
+      <recent name="E:\PycharmProject\DL\app\Operator_network" />
+      <recent name="E:\PycharmProject\DL\app\DeepOnet\model" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\PycharmProject\DL\app\static" />
+      <recent name="E:\PycharmProject\DL\app\pinn_mionet" />
+      <recent name="E:\PycharmProject\DL\app" />
+      <recent name="E:\PycharmProject\DL\app\Operator_network" />
       <recent name="H:\DL\app\static\img" />
     </key>
   </component>
@@ -166,6 +240,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="DL.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -251,6 +326,36 @@
       <workItem from="1734186008736" duration="7122000" />
       <workItem from="1734498408887" duration="1635000" />
       <workItem from="1734692832501" duration="589000" />
+      <workItem from="1735198628865" duration="2919000" />
+      <workItem from="1748500694954" duration="7583000" />
+      <workItem from="1748509958524" duration="565000" />
+      <workItem from="1748571714320" duration="2686000" />
+      <workItem from="1749001762641" duration="7061000" />
+      <workItem from="1749105817043" duration="3736000" />
+      <workItem from="1749435604093" duration="11830000" />
+      <workItem from="1749519414550" duration="5137000" />
+      <workItem from="1749539968977" duration="609000" />
+      <workItem from="1750054268521" duration="7256000" />
+      <workItem from="1750074714477" duration="3207000" />
+      <workItem from="1750144443893" duration="305000" />
+      <workItem from="1750228534091" duration="1208000" />
+      <workItem from="1753409424949" duration="2920000" />
+      <workItem from="1753433452337" duration="2516000" />
+      <workItem from="1753496754926" duration="710000" />
+      <workItem from="1753497909619" duration="165000" />
+      <workItem from="1753521215507" duration="1966000" />
+      <workItem from="1753523991693" duration="853000" />
+      <workItem from="1753530088610" duration="1425000" />
+      <workItem from="1753531829182" duration="2873000" />
+      <workItem from="1753584275701" duration="561000" />
+      <workItem from="1753605812970" duration="1065000" />
+      <workItem from="1753606995227" duration="3294000" />
+      <workItem from="1753612854646" duration="5721000" />
+      <workItem from="1753671037877" duration="821000" />
+      <workItem from="1753692960504" duration="135000" />
+      <workItem from="1753773854237" duration="3788000" />
+      <workItem from="1753839182150" duration="621000" />
+      <workItem from="1753839944922" duration="3022000" />
     </task>
     <servers />
   </component>
@@ -300,11 +405,27 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/DeepOnet/deeponet.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/DeepOnet/train_tang.py</url>
+          <line>106</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DL$manage.coverage" NAME="manage Coverage Results" MODIFIED="1729757195474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DL$train_deeponet.coverage" NAME="train_deeponet Coverage Results" MODIFIED="1731652607969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/Operator_network" />
-    <SUITE FILE_PATH="coverage/DL$train_tang.coverage" NAME="train_tang Coverage Results" MODIFIED="1720684653552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/DeepOnet" />
-    <SUITE FILE_PATH="coverage/DL$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1721198573777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/DeepOnet/dataset" />
     <SUITE FILE_PATH="coverage/DL$pythonfile4.coverage" NAME="pythonfile4 Coverage Results" MODIFIED="1717399681976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DL$manage.coverage" NAME="manage Coverage Results" MODIFIED="1729757195474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DL$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1721198573777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/DeepOnet/dataset" />
+    <SUITE FILE_PATH="coverage/DL$train_tang.coverage" NAME="train_tang Coverage Results" MODIFIED="1720684653552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/DeepOnet" />
+    <SUITE FILE_PATH="coverage/DL$train_deeponet.coverage" NAME="train_deeponet Coverage Results" MODIFIED="1731652607969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/Operator_network" />
   </component>
 </project>

@@ -31,8 +31,9 @@
         <i class="bi bi-stack"></i> Deep Learning
     </div>
     <div>
-        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i class="bi bi-person-circle" id="userDropdownIcon"></i>
-        <span id="username"> </span></button>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"> </span></button>
     </div>
 </div>
 <div style="display: flex;">
@@ -40,154 +41,201 @@
         <div class="form-control shadow-lg m-lg-5" id="result-display">
 
         </div>
-        <div id="index-selection"  style="position: absolute; top: 400px; left: 50px; width: 160px; height: 200px;">
-                <label for="data_index" class="form-label">选择测试数据索引 / Select Data Index</label>
-                <select class="form-select shadow-lg" id="data_index">
-                    <!-- 动态填充索引选项 -->
-                </select>
+        <div id="index-selection" style="position: absolute; top: 400px; left: 50px; width: 160px; height: 200px;">
+            <label for="data_index" class="form-label">选择测试数据索引 / Select Data Index</label>
+            <select class="form-select shadow-lg" id="data_index">
+                <!-- 动态填充索引选项 -->
+            </select>
         </div>
-        <div id="images-display" class="shadow-lg m-lg-5 text-center" style="position: absolute; top: 400px; left: 280px;width: 800px; height: 450px; ">
+        <div id="images-display" class="shadow-lg m-lg-5 text-center"
+             style="position: absolute; top: 400px; left: 280px;width: 800px; height: 450px; ">
             <!-- 图像展示区 -->
-            <img id="image1" style="max-width: 100%; display: none;" alt="图像1" />
+            <img id="image1" style="max-width: 100%; display: none;" alt="图像1"/>
         </div>
     </div>
 
 
-<div style="flex: 0 0 25%;">
-    <div style="margin: 20px 50px 10px 10px;">
-        <label for="data_type" class="form-label">数据类型 / Data Type</label>
-        <select class="form-select shadow-lg" aria-label="Default select example" name="data_type"
-                id="data_type">
-            <option selected value="0">未选择 / not selected</option>
-            <option value="1">文本数据（csv，excel）</option>
-            <option value="2">图像压缩包数据（zip）</option>
-            <option value="3">动力学数据（npz）</option>
-        </select>
-    </div>
-    <div style="position: relative; margin: 30px 50px 10px 10px;">
-        <div style="margin-top: 50px; ">文件上传 / Data Upload</div>
-        <input class="form-control shadow-lg" type="file" id="data_File" name="data_File" style="height: 300px;">
-        <i class="bi bi-file-earmark-arrow-up" id="fileIcon"
-           style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
-    </div>
-    <div style="position: relative; margin: 30px 50px 10px 10px;">
-        <div style="margin-top: 50px; ">模型上传 / Data Upload</div>
-        <input class="form-control shadow-lg" type="file" id="model_File" name="model_File" style="height: 300px;">
-        <i class="bi bi-file-earmark-arrow-up" id="modelIcon"
-           style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
-    </div>
-    <div style="margin: 20px 50px 10px 10px;">
-    <button type="submit" class="btn btn-primary shadow-lg" id='btn'>Upload</button>
+    <div style="flex: 0 0 25%;">
+        <div style="margin: 20px 50px 10px 10px;">
+            <label for="data_type" class="form-label">数据类型 / Data Type</label>
+            <select class="form-select shadow-lg" aria-label="Default select example" name="data_type"
+                    id="data_type">
+                <option selected value="0">未选择 / not selected</option>
+                <option value="1">文本数据（csv，excel）</option>
+                <option value="2">图像压缩包数据（zip）</option>
+                <option value="3">动力学数据（npz）</option>
+            </select>
+        </div>
+        <div style="position: relative; margin: 30px 50px 10px 10px;">
+            <div style="margin-top: 50px; ">文件上传 / Data Upload</div>
+            <input class="form-control shadow-lg" type="file" id="data_File" name="data_File" style="height: 300px;">
+            <i class="bi bi-file-earmark-arrow-up" id="fileIcon"
+               style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+        </div>
+        <div style="position: relative; margin: 30px 50px 10px 10px;">
+            <div style="margin-top: 50px; ">模型上传 / Data Upload</div>
+            <input class="form-control shadow-lg" type="file" id="model_File" name="model_File" style="height: 300px;">
+            <i class="bi bi-file-earmark-arrow-up" id="modelIcon"
+               style="position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(3); pointer-events: none;"></i>
+        </div>
+        <div style="margin: 20px 50px 10px 10px;">
+            <button type="submit" class="btn btn-primary shadow-lg" id='btn'>Upload</button>
+        </div>
     </div>
 </div>
-</div>
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        let result = [];
+    let result = [];
 
-        $(function () {
-            $("body").fadeIn(600);
-            get_result();
-            data_icons();
-            model_icons();
-            get_username()
+    // 刷新图片缓存
+    function freshImage(src) {
+        return src + (src.includes('?') ? '&' : '?') + '_=' + Date.now();
+    }
 
+    $(function () {
+        $("body").fadeIn(600);
+        get_result();
+        data_icons();
+        model_icons();
+        get_username()
+
+    });
+
+    function get_username() {
+        $.ajax({
+            url: '/get_username/',
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                let username = data.username;
+                $('#username').text(username); // 显示用户名
+            }
         });
+    }
 
-        function get_username() {
+    function navigateTo() {
+        // 添加淡出效果
+        $("body").fadeOut(300, function () {
+            window.location.href = '/navigation/';
+        });
+    }
+
+    function get_result() {
+        $("#btn").click(function () {
+            // 创建 FormData 对象来存储表单数据
+            let formData = new FormData();
+            let data_type = $("#data_type").val();
+            // 将表单数据添加到 FormData 对象中
+            formData.append('data_File', $('#data_File')[0].files[0]);
+            formData.append('model_File', $('#model_File')[0].files[0]);
+            formData.append('data_type', data_type);
             $.ajax({
-                url: '/get_username/',
+                url: '/get_result/',
                 type: "post",
-                dataType: "json",
+                data: formData, // 将 FormData 对象作为数据发送
+                processData: false, // 不对数据进行处理
+                contentType: false, // 不设置内容类型
                 success: function (data) {
-                    let username = data.username;
-                    $('#username').text(username); // 显示用户名
-                }
-            });
-        }
-
-        function navigateTo() {
-            // 添加淡出效果
-            $("body").fadeOut(300, function () {
-                window.location.href = '/navigation/';
-            });
-        }
-
-        function get_result() {
-            $("#btn").click(function () {
-                // 创建 FormData 对象来存储表单数据
-                let formData = new FormData();
-                let data_type = $("#data_type").val();
-                // 将表单数据添加到 FormData 对象中
-                formData.append('data_File', $('#data_File')[0].files[0]);
-                formData.append('model_File', $('#model_File')[0].files[0]);
-                formData.append('data_type', data_type);
-                $.ajax({
-                    url: '/get_result/',
-                    type: "post",
-                    data: formData, // 将 FormData 对象作为数据发送
-                    processData: false, // 不对数据进行处理
-                    contentType: false, // 不设置内容类型
-                    success: function (data) {
-                        result = data;
-                        let formattedResult = `
+                    result = data;
+                    let formattedResult = ``
+                    if ($('#model_File')[0].files[0].name.startsWith('transformer_')) {
+                        formattedResult = `Accuracy: ${data.Accuracy.toFixed(4)}`
+                    } else if ($('#model_File')[0].files[0].name.startsWith('pinn_')) {
+                        result = data.result
+                        formattedResult = `
+                          L2_ERROR_X: ${result[0].l2_error_x.toFixed(4)}<br>
+                          MSE_X: ${result[0].mse_x.toFixed(4)}<br>
+                          MAE_X: ${result[0].mae_x.toFixed(4)}<br><br>
+                          L2_ERROR_Y: ${result[0].l2_error_y.toFixed(4)}<br>
+                          MSE_Y: ${result[0].mse_y.toFixed(4)}<br>
+                          MAE_Y: ${result[0].mae_y.toFixed(4)}<br><br>
+                          L2_ERROR_Z: ${result[0].l2_error_z.toFixed(4)}<br>
+                          MSE_Z: ${result[0].mse_z.toFixed(4)}<br>
+                          MAE_Z: ${result[0].mae_z.toFixed(4)}
+                        `;
+                    } else {
+                        formattedResult = `
                           L2 Error: ${data.l2_error.toFixed(4)}<br>
                           MSE: ${data.mse.toFixed(4)}<br>
                           R2: ${data.R2.toFixed(2)}<br>
                           MAE: ${data.mae.toFixed(4)}
                         `;
-                        console.log(result);
-                        $("#result-display").html(formattedResult);
-                        //$("#result-display").text(result.join(', ')); // 将结果以逗号分隔显示在页面上
-                        let dataCount = data.data_count || 0;
-                        if (dataCount > 0) {
-                            // 动态生成索引选项
-                            let select = $("#data_index");
-                            //console.log("select是",select)
-                            select.empty(); // 清空之前的选项
-                            for (let i = 0; i < dataCount; i++) {
-                                select.append(new Option(`测试数据 ${i}`, i));
-                            }
-                            {#$("#index-selection").fadeIn(300); // 显示索引选择部分#}
+                    }
+                    console.log($('#model_File')[0].files[0])
+                    console.log(result);
+                    //设置文字与图片
+                    $("#result-display").html(formattedResult);
+                    const image1 = document.getElementById("image1");
+                    image1.src = freshImage('/static/img/deep_png0.png');
+                    console.log(freshImage(image1.src))
+                    // 确保图片显示
+                    image1.style.display = "block";
+                    //$("#result-display").text(result.join(', ')); // 将结果以逗号分隔显示在页面上
+                    let dataCount = data.data_count || 0;
+                    if (dataCount > 0) {
+                        // 动态生成索引选项
+                        let select = $("#data_index");
+                        //console.log("select是",select)
+                        select.empty(); // 清空之前的选项
+                        for (let i = 0; i < dataCount; i++) {
+                            select.append(new Option(`测试数据 ${i}`, i));
                         }
-                    },
-                });
+                        {#$("#index-selection").fadeIn(300); // 显示索引选择部分#}
+                    }
+                },
             });
-        }
+        });
+    }
 
-        function data_icons() {
-            $('#data_File').change(function () {
-                let file = this.files[0];
-                let icon = $('#fileIcon');
-                if (file) {
-                    icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
-                } else {
-                    icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
-                }
-            });
-        }
+    function data_icons() {
+        $('#data_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#fileIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
 
-        function model_icons() {
-            $('#model_File').change(function () {
-                let file = this.files[0];
-                let icon = $('#modelIcon');
-                if (file) {
-                    icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
-                } else {
-                    icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
-                }
-            });
-        }
+    function model_icons() {
+        $('#model_File').change(function () {
+            let file = this.files[0];
+            let icon = $('#modelIcon');
+            if (file) {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up-fill'); // 默认文件图标
+            } else {
+                icon.attr('class', 'bi bi-file-earmark-arrow-up'); // 如果没有选择文件，默认显示上传图标
+            }
+        });
+    }
 
-        document.getElementById("data_index").addEventListener("change", function () {
+    document.getElementById("data_index").addEventListener("change", function () {
         const selectedIndex = this.value;
         const image1 = document.getElementById("image1");
-        image1.src = `/static/img/deep_png${selectedIndex}.png`;
-
+        image1.src = freshImage('/static/img/deep_png' + selectedIndex + '.png');
+        console.log(selectedIndex)
+        console.log(image1.src)
         // 确保图片显示
         image1.style.display = "block";
+        if ($('#model_File')[0].files[0].name.startsWith('pinn_')) {
+            // 设置文字
+            formattedResult = `
+                              L2_ERROR_X: ${result[selectedIndex].l2_error_x.toFixed(4)}<br>
+                              MSE_X: ${result[selectedIndex].mse_x.toFixed(8)}<br>
+                              MAE_X: ${result[selectedIndex].mae_x.toFixed(8)}<br><br>
+                              L2_ERROR_Y: ${result[selectedIndex].l2_error_y.toFixed(4)}<br>
+                              MSE_Y: ${result[selectedIndex].mse_y.toFixed(8)}<br>
+                              MAE_Y: ${result[selectedIndex].mae_y.toFixed(8)}<br><br>
+                              L2_ERROR_Z: ${result[selectedIndex].l2_error_z.toFixed(4)}<br>
+                              MSE_Z: ${result[selectedIndex].mse_z.toFixed(8)}<br>
+                              MAE_Z: ${result[selectedIndex].mae_z.toFixed(8)}
+                            `;
+            $("#result-display").html(formattedResult);
+        }
     });
 
-    </script>
+</script>
 </body>
 </html>

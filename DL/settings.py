@@ -85,7 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 不做修改
         'NAME': 'dl_platform',  # 数据库名
         'USER': 'root',  # 用户名
-        'PASSWORD': 'abc123',  # 密码
+        # 'PASSWORD': 'abc123',  # 密码
+        'PASSWORD': 'Yez3.1415926',  # 密码
         'HOST': '127.0.0.1',  # 主机
         'PORT': '3306',  # 端口号（默认）
     }
@@ -128,12 +129,12 @@ USE_TZ = False
 import os
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app')
 
 STATICFILES_DIRS = (
-    ('css', 'H:/DL/app/static/css'),
-    ('js', 'H:/DL/app/static/js'),
-    ('img', 'H:/DL/app/static/img'),
+    ('css', STATIC_ROOT+STATIC_URL+'css'),
+    ('js', STATIC_ROOT+STATIC_URL+'js'),
+    ('img', STATIC_ROOT+STATIC_URL+'img'),
     # ('upload', 'H:/DL/app/static/upload'),
 )
 

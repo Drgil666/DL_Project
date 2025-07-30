@@ -75,6 +75,8 @@ def show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learni
 
         def on_epoch_begin(self):
             self.start_time = time.time()
+            views.epoch_g = 0
+            views.logs_g = []
 
         def on_epoch_end(self, epoch, loss):
             views.epoch_g = epoch

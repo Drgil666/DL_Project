@@ -1,5 +1,7 @@
-#单自由度
+# 单自由度
 import torch
+import matplotlib
+matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
 from scipy.io import loadmat
 from tqdm import tqdm
@@ -15,16 +17,16 @@ from django.http import HttpRequest
 from app import views
 from app.DeepOnet.deeponet import Model
 
-re=HttpRequest()
+re = HttpRequest()
 device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
 dt = 0.001
 min_t = 0
 max_t = 5
-a = np.arange(min_t, max_t, dt)
+a = np.arange(min_t,max_t,dt)
 lt = a.shape[0]
 
-def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs):
 
+def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs):
     # 验证
     # print(seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs)
 
@@ -34,20 +36,19 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
     start_time_train = time.time()
 
     model = DeepOnet(
-                    branch_layers,
-                    trunk_layers,
-                    activation,
-                    initializer
-                    ).to(device)
+        branch_layers,
+        trunk_layers,
+        activation,
+        initializer
+    ).to(device)
 
     num_params = sum(p.numel() for p in model.parameters())
     print(f"Total parameters: {num_params}")
 
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), learning_rate)
+    optimizer = optim.Adam(model.parameters(),learning_rate)
 
     num_epochs = num_epochs
-
 
     '''load train dataset'''
 
@@ -63,8 +64,6 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
     trunk_input = trunk_input[:lt:5]
     trunk_input = torch.Tensor(trunk_input).to(device)
 
-
-
     labels_train = data_train['Y'].astype(np.float32)
     labels_train = torch.tensor(labels_train).to(device)
     labels_train = labels_train[:,0:lt:5]
@@ -72,27 +71,32 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
     loss_epoches = []
 
     class MyCallback:
-        def __init__(self, num_epochs):
+        def __init__(self,num_epochs):
             self.start_time = None
             self.num_epochs = num_epochs  # Total number of epochs for estimate time
 
+
         def on_epoch_begin(self):
             self.start_time = time.time()
+            views.epoch_g = 0
+            views.logs_g = []
 
-        def on_epoch_end(self, epoch, loss):
+
+        def on_epoch_end(self,epoch,loss):
             views.epoch_g = epoch
 
             # Update logs globally
-            all_log = {'epoch': views.epoch_g, 'loss': loss.item()}
+            all_log = {'epoch':views.epoch_g,'loss':loss.item()}
             views.logs_g.append(all_log)
 
             # Calculate estimated remaining time
             end_time = time.time()
-            elapsed_time = end_time - self.start_time
-            views.estimate_time = elapsed_time * (self.num_epochs - views.epoch_g) / (views.epoch_g)  # Estimate time remaining
+            elapsed_time = end_time-self.start_time
+            views.estimate_time = elapsed_time*(self.num_epochs-views.epoch_g)/(
+                views.epoch_g)  # Estimate time remaining
 
             print(f'Epoch [{views.epoch_g}/{self.num_epochs}], Loss: {loss.item():.8f}')
-            print(f'Estimated time remaining: {views.estimate_time / 60:.2f} minutes')
+            print(f'Estimated time remaining: {views.estimate_time/60:.2f} minutes')
 
     callback = MyCallback(num_epochs=num_epochs)
     callback.on_epoch_begin()  # Callback for the start of the epoch
@@ -104,11 +108,10 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
         loss.backward()
         optimizer.step()
 
-        if (epoch + 1) % 1000 == 0:
+        if (epoch+1)%1000 == 0:
             loss_epoches.append(loss.item())
             # print('Epoch [{}/{}], Loss: {:.8f}'.format(epoch + 1, num_epochs, loss.item()))
-            callback.on_epoch_end(epoch + 1, loss)
-
+            callback.on_epoch_end(epoch+1,loss)
     views.loss_g = loss_epoches
     # end_time_train = time.time()
     # train_time = end_time_train-start_time_train
@@ -124,7 +127,7 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
 def show_deeponet_test(data_path,model_path):
     '''load test dataset'''
     start_time = time.time()
-    data_test = np.load(data_path, allow_pickle=True)
+    data_test = np.load(data_path,allow_pickle=True)
     t = data_test['t'].astype(np.float32)
     len_t = len(t)
     # cnt=6
@@ -144,18 +147,18 @@ def show_deeponet_test(data_path,model_path):
     # print("test_nums是：",test_nums)
 
     model = DeepOnet(
-                [1000,512,256,64],
-                [1,128,128,64,64],
-                "relu",
-                "Glorot normal"
-                ).to(device)
+        [1000,512,256,64],
+        [1,128,128,64,64],
+        "relu",
+        "Glorot normal"
+    ).to(device)
     model_path1 = model_path
     # model.load_state_dict(torch.load(model_path1))
     model.load_state_dict(torch.load(model_path1,map_location=torch.device('cpu')))
 
     model.eval()
     with torch.no_grad():
-        outputs_test = model(branch_input_test, trunk_input_test).to(device)
+        outputs_test = model(branch_input_test,trunk_input_test).to(device)
 
     end_time = time.time()
     test_time = end_time-start_time
@@ -164,7 +167,7 @@ def show_deeponet_test(data_path,model_path):
     labels_test_temp = labels_test.cpu().detach().numpy()
     outputs_test_temp = outputs_test.cpu().detach().numpy()
 
-    l2_error= l2_relative_error(labels_test_temp,outputs_test_temp)
+    l2_error = l2_relative_error(labels_test_temp,outputs_test_temp)
     mse = mean_squared_error(labels_test_temp,outputs_test_temp)
     R2 = R2_(labels_test_temp,outputs_test_temp)
     mae = MAE(labels_test_temp,outputs_test_temp)
@@ -180,14 +183,14 @@ def show_deeponet_test(data_path,model_path):
     for i in range(0,test_nums):
         # plt.show()
         x_data = np.arange(0,max_t,0.005)
-        plt.rcParams['font.sans-serif'] = ['SimHei'] # 推荐使用SimHei字体显示中文
+        plt.rcParams['font.sans-serif'] = ['SimHei']  # 推荐使用SimHei字体显示中文
         plt.rcParams['axes.unicode_minus'] = False
 
-        plt.figure(figsize=(9, 12))
+        plt.figure(figsize=(9,12))
 
-        plt.subplot(2, 1, 1)
-        plt.plot(x_data, labels_test[i, :], label='系统真实响应值')
-        plt.plot(x_data, outputs_test[i, :], label='响应值')
+        plt.subplot(2,1,1)
+        plt.plot(x_data,labels_test[i,:],label='系统真实响应值')
+        plt.plot(x_data,outputs_test[i,:],label='响应值')
         # plt.plot(x_data,outputs_test1[i,:],  label='阶跃响应值')
 
         plt.xlabel('时间(s)')
@@ -195,19 +198,20 @@ def show_deeponet_test(data_path,model_path):
         plt.legend(fontsize='18')
         plt.grid(True)
 
-        plt.subplot(2, 1, 2)
-        plt.plot(x_data,branch_input_test[i,:],color = 'r', label = '系统输入')
+        plt.subplot(2,1,2)
+        plt.plot(x_data,branch_input_test[i,:],color='r',label='系统输入')
         plt.xlabel('时间(s)')
         plt.ylabel('角加速度')
         plt.legend(fontsize='18')
         plt.grid(True)
 
-        filename = f'H:\\DL\\app\\static\\img\\deep_png{i}.png'
+        # filename = f'H:\\DL\\app\\static\\img\\deep_png{i}.png'
         # 保存为图片
-        plt.savefig(filename)
+        plt.savefig(os.path.join('app/static/img/'+'deep_png'+str(i)+'.png'))
         plt.close()
 
     return l2_error,mse,R2,mae,test_nums
+
 
 if __name__ == '__main__':
     show_deeponet()
