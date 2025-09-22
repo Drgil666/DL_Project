@@ -1,8 +1,6 @@
 # 单自由度
 import torch
-import matplotlib
-matplotlib.use('TkAgg')
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from tqdm import tqdm
 from torch import optim
