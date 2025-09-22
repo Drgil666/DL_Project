@@ -4,79 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/ddpg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/ppo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/Models/transformer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ddpg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_pinn_mionet.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ppo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_ql.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Operator_network/train_transformer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/ChnSentiCorp_htl_all_202505291656.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172039_202412060949.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172039_202412060954.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172048_LbQX3nq.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172111.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/data_202406061715_202411172148.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data_set/en.test.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dataset_temp/3DOF_train.npz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/dataset/zhenxin_test2.npz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/fnn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/mionet.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/mionet1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model/model1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pinn_mionet/model_save/pinn_zhenxin_data2_12_4e-07_500_35.0s_1.pth" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/DL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DL.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DL/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DeepOnet/dataset/data_test_7.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/dataset/data_test_7.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DeepOnet/dataset/data_train_25.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/dataset/data_train_25.npz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data_set/example简化_202411302246.csv" beforeDir="false" afterPath="$PROJECT_DIR$/app/data_set/example简化_202411302246.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dataset_temp/3DOF_test.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/dataset_temp/3DOF_test.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dataset_temp/zhouqi_test.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/dataset_temp/zhouqi_test.npz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" beforeDir="false" afterPath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png22.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/img/deep_png9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/ensemble.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/ensemble.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/fitting.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/fitting.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/load.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/load.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/parameter.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/parameter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/train.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/upload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/upload_testFile/data_test_7.npz" beforeDir="false" afterPath="$PROJECT_DIR$/app/upload_testFile/data_test_7.npz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,25 +39,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/PycharmProject/DL_before&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TODO_SCOPE": "All Places",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/PycharmProject/DL",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\PycharmProject\DL\app\static\img_backup" />
@@ -355,8 +287,18 @@
       <workItem from="1753692960504" duration="135000" />
       <workItem from="1753773854237" duration="3788000" />
       <workItem from="1753839182150" duration="621000" />
-      <workItem from="1753839944922" duration="3022000" />
+      <workItem from="1753839944922" duration="5238000" />
+      <workItem from="1754019611897" duration="47000" />
+      <workItem from="1758524272555" duration="2607000" />
     </task>
+    <task id="LOCAL-00001" summary="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
+      <created>1753843130837</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1753843130837</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,6 +347,10 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -415,7 +361,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DeepOnet/train_tang.py</url>
-          <line>106</line>
+          <line>107</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
