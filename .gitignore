@@ -5,3 +5,5 @@
 /app/models/
 /app/export/
 /app/Operator_network/dataset/
+/keybert_model.pkl
+/app/pinn_mionet/model_save/
