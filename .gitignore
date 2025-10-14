@@ -3,3 +3,5 @@
 /app/static/img/
 /app/model_temp/
 /app/models/
+/app/export/
+/app/Operator_network/dataset/

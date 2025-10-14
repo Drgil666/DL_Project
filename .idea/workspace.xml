@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="BugFix:修复matplotlib使用Tkinter后端导致的线程Bug.">
+    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="BugFix:新增导出训练Loss日志的文件生成功能。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DL/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" beforeDir="false" afterPath="$PROJECT_DIR$/app/model_temp/deeponet_zhouqi_5s_0.005.pth" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/train.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,6 +289,7 @@
       <workItem from="1758524272555" duration="2714000" />
       <workItem from="1760333907305" duration="1241000" />
       <workItem from="1760423013509" duration="10583000" />
+      <workItem from="1760442752551" duration="1958000" />
     </task>
     <task id="LOCAL-00001" summary="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
       <created>1753843130837</created>
