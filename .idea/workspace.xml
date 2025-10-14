@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="BugFix:新增导出训练Loss日志的文件生成功能。">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -291,7 +290,7 @@
       <workItem from="1760333907305" duration="1241000" />
       <workItem from="1760423013509" duration="10583000" />
       <workItem from="1760442752551" duration="2327000" />
-      <workItem from="1760447095781" duration="4835000" />
+      <workItem from="1760447095781" duration="5485000" />
     </task>
     <task id="LOCAL-00001" summary="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
       <created>1753843130837</created>
