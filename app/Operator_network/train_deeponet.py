@@ -1,3 +1,4 @@
+from datetime import datetime
 # 单自由度
 import torch
 import matplotlib.pyplot as plt
@@ -120,6 +121,8 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
     # # # #save model
     model_path = os.path.join('app/model_temp/deeponet_zhouqi_5s_0.005.pth')
     torch.save(model.state_dict(),model_path)
+
+
 
 
 def show_deeponet_test(data_path,model_path):

@@ -211,6 +211,9 @@
             <button id="downloadBtn" class="btn btn-primary">
                 <i class="bi bi-download"></i> 下载模型
             </button>
+            <button id="downloadLog" class="btn btn-primary">
+                <i class="bi bi-download"></i> 下载训练日志
+            </button>
             <div id="accuracy_score"></div>
 
         </div>
@@ -269,9 +272,12 @@
         $("body").fadeIn(600);
         $("#chartDiv").hide();
         $("#downloadBtn").prop("disabled", true);
+        $("#downloadLog").prop("disabled", true);
         get_username()
         get_parameter();
         bindBtn2Event();
+        downloadBtn();
+        downloadLog();
     });
 
     function getRenderData(key = null) {
@@ -350,6 +356,8 @@
                 left_time = data.time;
                 logs = data.log;
                 console.log(typeof epoch);
+                {#TODO:存储导出文件生成路径 #}
+                {#pdf_file_path=data.filepath;#}
                 BarEvent();
                 show_logs();
                 show_time();
@@ -359,9 +367,8 @@
                     addTimeout(model_data, 1000);
                     $("#chartDiv").show();
                     $("#downloadBtn").prop("disabled", false);
-                    downloadBtn()
+                    $("#downloadLog").prop("disabled", false);
                 }
-
             }
         });
         if (epoch < all_epochs) {
@@ -553,6 +560,47 @@
         $('#downloadBtn').click(function () {
             // 发起下载模型的请求
             window.location.href = '/download_model/';
+        });
+    }
+
+    function downloadLog() {
+        $('#downloadLog').click(function () {
+
+            // 发起导出pdf的请求
+            $.ajax({
+                url: '/generate_pdf/',
+                type: "post",
+                contentType: "application/json",
+                xhrFields: {
+                    responseType: 'blob' // 设置响应类型为 blob
+                },
+                data: JSON.stringify({
+                    type: 'train',
+                    model_name: $("#model_name").val()
+                }),
+                success: function (blob, textStatus, jqXHR) {
+                    const contentDisposition = jqXHR.getResponseHeader('Content-Disposition');
+                    const fileName = contentDisposition.split('filename=')[1].replace(/"/g, '');
+                    console.log(fileName)
+                    console.log(blob.size)
+                    // 创建一个 URL 对象
+                    const url = window.URL.createObjectURL(blob);
+                    // 创建一个隐藏的 <a> 标签
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName; // 设置下载文件名
+                    document.body.appendChild(link);
+                    link.click(); // 模拟点击
+                    document.body.removeChild(link); // 移除临时创建的 <a> 标签
+                    window.URL.revokeObjectURL(url); // 释放 URL 对象
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                    console.error('Status Code:', jqXHR.status);
+                    console.error('Response Text:', jqXHR.responseText);
+                    console.error('Headers:', jqXHR.getAllResponseHeaders());
+                }
+            });
         });
     }
 

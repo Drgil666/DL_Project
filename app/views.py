@@ -1,63 +1,56 @@
+import ast
+import gc
 import io
-import zipfile
-from io import BytesIO
+import json
 import os
-import csv
-import cv2
+import pickle
 import time
+import zipfile
 from datetime import datetime
-import base64
-import matplotlib.pyplot as plt
-import pandas as pd
+from io import BytesIO
+from pathlib import Path
+
+from reportlab.pdfgen import canvas
+import cv2
+import jieba
 import numpy as np
-from django.core.files.storage import default_storage
-from django.db import models
+import pandas as pd
+import tensorflow as tf
+from django.contrib.auth import authenticate,login
+from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
 from django.http import JsonResponse,HttpResponse
 from django.shortcuts import render,redirect,get_object_or_404
-from keras.models import Model
+from django.views.decorators.csrf import csrf_exempt
+from fuzzywuzzy import fuzz
+from keras import Sequential
 from keras.applications import MobileNet,ResNet50,VGG16,VGG19,InceptionV3,MobileNetV2,DenseNet121,DenseNet169, \
     DenseNet201
+from keras.layers import (Flatten,Dense,Dropout,BatchNormalization,Conv1D,Conv2D,GlobalAveragePooling1D,
+                          GlobalAveragePooling2D,LSTM,MultiHeadAttention,
+                          LayerNormalization,
+                          Input,Activation,Add,GRU,Reshape,Concatenate)
+from keras.models import Model
+from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
-from tensorflow import keras
-from app.Operator_network.train_transformer import show_transformer,show_transformer_test
-from app.Operator_network.train_deeponet import show_deeponet,show_deeponet_test
-from app.Operator_network.train_mionet import show_mionet
-from app.Operator_network.train_pinn_mionet import show_pinn_mionet_test
-from app.Operator_network.train_ql import show_QL
-from app.Operator_network.train_ppo import show_PPO
-from app.Operator_network.train_ddpg import show_DDPG
-from app.models import RegistrationForm,CSVFile,MODELFile,IMGFile
-from django.contrib.auth import authenticate,login
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 from sklearn import preprocessing
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-import tensorflow as tf
-from app.DeepOnet.train_tang import show1
-from app.Operator_network import train_deeponet
-from keras import Sequential
-from keras.layers import (Flatten,Dense,Dropout,BatchNormalization,Conv1D,Conv2D,MaxPooling1D,
-                          MaxPooling2D,GlobalAveragePooling1D,GlobalAveragePooling2D,LSTM,MultiHeadAttention,
-                          LayerNormalization,
-                          Input,Activation,Add,GRU,Reshape,Concatenate)
-from keras.optimizers import Adam,Adadelta
-import json
-
-import jieba
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.utils.class_weight import compute_class_weight
-from keybert import KeyBERT
-from collections import Counter
-from fuzzywuzzy import fuzz
-import pickle
-import gc
-import ast
+from tensorflow import keras
+
+from app.DeepOnet.train_tang import show1
+from app.Operator_network.train_ddpg import show_DDPG
+from app.Operator_network.train_deeponet import show_deeponet,show_deeponet_test
+from app.Operator_network.train_mionet import show_mionet
+from app.Operator_network.train_pinn_mionet import show_pinn_mionet_test
+from app.Operator_network.train_ppo import show_PPO
+from app.Operator_network.train_ql import show_QL
+from app.Operator_network.train_transformer import show_transformer,show_transformer_test
+from app.models import RegistrationForm,CSVFile,MODELFile,IMGFile
 
 # global data
 df = pd.DataFrame()
@@ -1737,3 +1730,29 @@ def ensemble_data(request):
     weight_range = list(range(1,len(weight_log)))
     data = {"weight_log":weight_log,"weight_range":weight_range}
     return JsonResponse(data)
+
+@csrf_exempt
+def generate_pdf(request):
+    import json
+    data = json.loads(request.body)
+    generate_type = data.get('type')
+    model_type = " "
+    model_name = data.get('model_name')
+    pdf_file_name = generate_type+"_"+model_type+"_"+model_name+"_"+str(int(datetime.now().timestamp()))+".pdf"
+    pdf_file_path = Path(__file__).resolve().parent
+    pdf_file_path = os.path.join(pdf_file_path,"export",pdf_file_name)
+    print(pdf_file_path)
+    pdf_file = canvas.Canvas(pdf_file_path)
+    pdf_file.setFont("Helvetica",12)
+    pdf_file.drawString(100,750,"Hello, ReportLab!")
+    pdf_file.save()
+    # 打开模型文件并读取内容
+    with open(pdf_file_path,'rb') as f:
+        model_content = f.read()
+    # 构建HTTP响应
+    response = HttpResponse(model_content,content_type='application/octet-stream')
+    # 设置响应头，指示浏览器下载文件
+    response['Content-Disposition'] = f'attachment; filename="{pdf_file_name}"'
+    # 跨域问题
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
