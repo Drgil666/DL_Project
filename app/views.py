@@ -1,4 +1,5 @@
 import ast
+import base64
 import gc
 import io
 import json
@@ -10,6 +11,8 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 
+from PIL import Image
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 import cv2
 import jieba
@@ -1731,20 +1734,51 @@ def ensemble_data(request):
     data = {"weight_log":weight_log,"weight_range":weight_range}
     return JsonResponse(data)
 
+
 @csrf_exempt
 def generate_pdf(request):
     import json
     data = json.loads(request.body)
-    generate_type = data.get('type')
-    model_type = " "
-    model_name = data.get('model_name')
+    generate_type = data.get('type')  # 模型训练类型train/test
+    model_type = " "  # 模型类型
+    model_name = data.get('model_name')  # 模型名称
+    loss_pic = data.get('pic')  # 训练生成的图像
+    parameter_data = data.get('parameter_data')
+    parameter_data = json.loads(parameter_data)
+    loss = parameter_data.get('loss')
+    print(loss)
     pdf_file_name = generate_type+"_"+model_type+"_"+model_name+"_"+str(int(datetime.now().timestamp()))+".pdf"
     pdf_file_path = Path(__file__).resolve().parent
     pdf_file_path = os.path.join(pdf_file_path,"export",pdf_file_name)
     print(pdf_file_path)
+    print("-----")
+    print(loss_pic)
+    print("-----")
     pdf_file = canvas.Canvas(pdf_file_path)
     pdf_file.setFont("Helvetica",12)
+    prefix = "data:image/png;base64,"
+    if loss_pic.startswith(prefix):
+        loss_pic = loss_pic[len(prefix):]
+    loss_pic = base64.b64decode(loss_pic)
+    # 使用 PIL 加载图片
+    image = Image.open(BytesIO(loss_pic))
+    # 创建一个白色背景的图片
+    white_background = Image.new("RGBA",image.size,"WHITE")
+    # 将原图粘贴到白色背景上
+    white_background.paste(image,(0,0),image)
+    # 转换为 RGB 模式
+    white_background = white_background.convert("RGB")
+    # 保存到 BytesIO
+    output = BytesIO()
+    white_background.save(output,format="PNG")
+    output.seek(0)
+    loss_pic = ImageReader(output)
+
     pdf_file.drawString(100,750,"Hello, ReportLab!")
+    pdf_file.drawImage(loss_pic,50,50,
+                       width=loss_pic.getSize()[0]/2,
+                       height=loss_pic.getSize()[1]/2,
+                       preserveAspectRatio=True)
     pdf_file.save()
     # 打开模型文件并读取内容
     with open(pdf_file_path,'rb') as f:

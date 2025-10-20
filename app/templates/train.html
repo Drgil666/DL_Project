@@ -252,6 +252,8 @@
     let accuracy_score = 0
     let epoch_list = []
     let timeoutIds = []
+    let chart = null
+    let parameter_data = []
     change()
 
     //设置定时任务
@@ -356,11 +358,14 @@
                 left_time = data.time;
                 logs = data.log;
                 console.log(typeof epoch);
+                console.log(epoch)
+                console.log(logs)
                 {#TODO:存储导出文件生成路径 #}
                 {#pdf_file_path=data.filepath;#}
                 BarEvent();
                 show_logs();
                 show_time();
+                {# 记录所有的loss #}
                 // 检查epoch是否等于100，如果是，则显示Modal
                 if (epoch > all_epochs - 1) {
                     $('#exampleModal').modal('show');
@@ -451,6 +456,8 @@
 
     function chartEvent() {
         let ctx = document.getElementById('accuracyChart').getContext('2d');
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         //epoch_list = [1000,2000,3000]
         let data = {
             labels: epoch_list,
@@ -496,12 +503,24 @@
                 plugins: {
                     legend: {
                         position: 'top',
+                    },
+                    // 添加自定义插件来设置背景颜色
+                    afterDraw: (chart) => {
+                        const ctx = chart.ctx;
+                        ctx.save();
+                        ctx.globalCompositeOperation = 'destination-over';
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, chart.width, chart.height);
+                        ctx.restore();
                     }
                 },
                 backgroundColor: 'rgb(253,253,253)' // 设置背景颜色，可以是颜色名、十六进制、RGB、RGBA等格式
             }
         };
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         const myChart = new Chart(ctx, config);
+        chart = myChart
     }
 
     function ValchartEvent() {
@@ -524,7 +543,6 @@
                 }
 
             ]
-
         };
         let config = {
             type: 'line', // 设置图表类型
@@ -550,7 +568,6 @@
                     }
                 },
                 backgroundColor: 'rgb(253,253,254)' // 设置背景颜色，可以是颜色名、十六进制、RGB、RGBA等格式
-
             }
         };
         const myChart = new Chart(ctx, config);
@@ -563,10 +580,17 @@
         });
     }
 
+    // 发起导出pdf的请求
+    function getParameterData() {
+        {# TODO:根据不同模型类型获取不同参数 #}
+        parameter_data = JSON.stringify({
+            'loss': logs
+        })
+    }
+
     function downloadLog() {
         $('#downloadLog').click(function () {
-
-            // 发起导出pdf的请求
+            getParameterData()
             $.ajax({
                 url: '/generate_pdf/',
                 type: "post",
@@ -576,7 +600,9 @@
                 },
                 data: JSON.stringify({
                     type: 'train',
-                    model_name: $("#model_name").val()
+                    model_name: $("#model_name").val(),
+                    parameter_data: parameter_data,
+                    pic: chart.toBase64Image()
                 }),
                 success: function (blob, textStatus, jqXHR) {
                     const contentDisposition = jqXHR.getResponseHeader('Content-Disposition');
