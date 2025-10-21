@@ -1,16 +1,18 @@
-import torch
-import torch.nn as nn
-from torch import optim
-from app.Operator_network.Models.mionet import MIONet
-from app.Operator_network.metrics import *
 import os
 # import matplotlib.pyplot as plt
 import time
-from app.Operator_network.metrics import *
-from django.http import HttpRequest
-from app import views
 
-re=HttpRequest()
+import torch
+import torch.nn as nn
+from django.http import HttpRequest
+from torch import optim
+
+from app import views
+from app.Operator_network.Models.mionet import MIONet
+from app.Operator_network.metrics import *
+
+re = HttpRequest()
+
 
 def show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs):
     device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
@@ -115,7 +117,7 @@ def show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learni
     '''save model'''
     model_path = os.path.join('app/model_temp/MIOnet_x_10s_0.05.pth')
     torch.save(model.state_dict(), model_path)
-
+    return model_path
     '''load test dataset'''
     # data_train = np.load('dataset/3DOF_test.npz',allow_pickle=True)
     #

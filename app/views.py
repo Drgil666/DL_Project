@@ -11,14 +11,12 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image
-from reportlab.lib.utils import ImageReader
-from reportlab.pdfgen import canvas
 import cv2
 import jieba
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from PIL import Image
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
@@ -28,15 +26,14 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from fuzzywuzzy import fuzz
 from keras import Sequential
-from keras.applications import MobileNet,ResNet50,VGG16,VGG19,InceptionV3,MobileNetV2,DenseNet121,DenseNet169, \
-    DenseNet201
-from keras.layers import (Flatten,Dense,Dropout,BatchNormalization,Conv1D,Conv2D,GlobalAveragePooling1D,
-                          GlobalAveragePooling2D,LSTM,MultiHeadAttention,
+from keras.layers import (Flatten,Dense,Dropout,BatchNormalization,Conv1D,LSTM,MultiHeadAttention,
                           LayerNormalization,
-                          Input,Activation,Add,GRU,Reshape,Concatenate)
+                          Input,Concatenate)
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
 from sklearn import preprocessing
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
@@ -93,6 +90,8 @@ output_formula = ''
 formula = ''
 final_parameters = ''
 weight_log = []
+model_path = ''
+model_selection_dict = ["CNN_1D","LSTM","Transformer","deeponet","mionet","QL","PPO","DDPG"]
 model_introduction = {
     "CNN 1D":
         "\nCNN 1D:"
@@ -557,11 +556,10 @@ def model_compile(X_train,X_test,y_train,y_test,model,optimizer_input,l_r_input,
     return history,model,y_test,X_test,path
 
 
+
 def download_model(request):
     # 模型文件路径
-    global path,model_name
-    model_path = path
-    model_n = f"{model_name}.keras"
+    global model_path,model_name
     # 检查模型文件是否存在
     if not os.path.exists(model_path):
         return HttpResponse("模型文件不存在",status=404)
@@ -574,7 +572,7 @@ def download_model(request):
     response = HttpResponse(model_content,content_type='application/octet-stream')
 
     # 设置响应头，指示浏览器下载文件
-    response['Content-Disposition'] = f'attachment; filename="{model_n}"'
+    response['Content-Disposition'] = f'attachment; filename="{f.name}"'
     return response
 
 
@@ -606,178 +604,6 @@ def DDPG(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,drop
 def PINN_MIONET(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
                 dense_activation):
     return 6
-
-
-def Mobilenet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-              dense_activation):
-    base_model = MobileNet(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="Mobilenet")
-
-    return model
-
-
-def Resnet50(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-             dense_activation):
-    base_model = ResNet50(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="ResNet50")
-
-    return model
-
-
-def vgg16(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-          dense_activation):
-    base_model = VGG16(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="VGG16")
-
-    return model
-
-
-def vgg19(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-          dense_activation):
-    base_model = VGG19(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="VGG19")
-
-    return model
-
-
-def inception_v3(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-                 dense_activation):
-    base_model = InceptionV3(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="InceptionV3")
-
-    return model
-
-
-def mobilenet_v2(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-                 dense_activation):
-    base_model = MobileNetV2(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="MobileNetV2")
-
-    return model
-
-
-def densenet_121(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-                 dense_activation):
-    base_model = DenseNet121(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="DenseNet121")
-
-    return model
-
-
-def densenet_169(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-                 dense_activation):
-    base_model = DenseNet169(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="DenseNet169")
-
-    return model
-
-
-def densenet_201(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-                 dense_activation):
-    base_model = DenseNet201(weights=None,include_top=False,input_shape=input_shape)
-
-    x = base_model.output
-
-    # Add a global spatial average pooling layer
-    x = GlobalAveragePooling2D()(x)
-
-    # Add a logistic layer
-    predictions = Dense(1,activation="sigmoid")(x)
-
-    model = Model(inputs=base_model.input,outputs=predictions,name="DenseNet201")
-
-    return model
-
-
-def CNN_2D(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-           dense_activation):
-    model = Sequential(name="CNN_2D")
-    model.add(Input(shape=input_shape,name='CNN2D'))
-
-    for i in range(num_layers):
-        model.add(Conv2D(filters=num_filters,kernel_size=kernel_size,strides=strides,activation=layer_activation,
-                         name='cnnconv2d'+str(i)))
-        model.add(BatchNormalization())
-        model.add(Dropout(dropout_rate))
-
-    model.add(Flatten())
-    model.add(Dense(64,activation=layer_activation,name='cnn2ddense1'))
-    model.add(Dropout(dropout_rate))
-    model.add(Dense(num_classes,activation=dense_activation,name='cnn2ddense2'))
-
-    return model
 
 
 def CNN(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
@@ -816,77 +642,6 @@ def LsTM(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,drop
     return model
 
 
-def GRUModel(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-             dense_activation):
-    model = Sequential(name="GRU")
-    model.add(Input(shape=input_shape,name='GRU'))
-
-    for i in range(num_layers-1):
-        model.add(GRU(units=num_filters,activation=layer_activation,
-                      return_sequences=True))  # 增加 return_sequences=True，使得每个 GRU 层都返回完整的序列
-        model.add(Dropout(dropout_rate))
-
-    model.add(GRU(units=num_filters,activation=layer_activation))  # 最后一个 GRU 层不需要返回完整序列
-    model.add(Dense(num_classes,activation=dense_activation))
-
-    return model
-
-
-def BidirectionalLSTMModel(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
-                           layer_activation,dense_activation):
-    model = Sequential([Input(shape=input_shape,name='BidirectionalLSTM')],name="BidirectionalLSTM")
-    # 添加多层 LSTM
-    for i in range(num_layers):
-        model.add(tf.keras.layers.Bidirectional(
-            LSTM(units=num_filters,activation=layer_activation)))
-        model.add(Dropout(dropout_rate))
-        model.add(Reshape((1,128)))
-    model.add(Flatten())
-    # 添加最后的全连接层
-    model.add(Dense(num_classes,activation=dense_activation))
-
-    return model
-
-
-def tcnModel(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-             dense_activation):
-    model = Sequential(
-        [Input(shape=input_shape,name='TCN'),Conv1D(filters=num_filters,kernel_size=kernel_size,strides=strides,
-                                                    activation=layer_activation)],name="TCN")
-
-    for i in range(num_layers-1):
-        model.add(
-            tf.keras.layers.Conv1D(filters=num_filters,kernel_size=kernel_size,strides=strides,
-                                   activation=layer_activation,padding='causal'))
-        model.add(Dropout(dropout_rate))
-
-    model.add(tf.keras.layers.GlobalAveragePooling1D())
-    model.add(tf.keras.layers.Dense(num_classes,activation=dense_activation))
-
-    return model
-
-
-def TimeDistributedDenseModel(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,
-                              layer_activation,dense_activation):
-    model = tf.keras.models.Sequential(name="TimeDistributedDense")
-
-    # 添加输入层
-    model.add(Input(shape=input_shape,name='TimeDistributedDense'))
-
-    # 添加 TimeDistributed 密集层
-    for i in range(num_layers):
-        model.add(tf.keras.layers.TimeDistributed(Dense(num_filters,activation=layer_activation)))
-        model.add(tf.keras.layers.Dropout(dropout_rate))
-
-    # 添加全局池化层或展平层
-    model.add(tf.keras.layers.GlobalAveragePooling1D())  # 也可以使用 GlobalMaxPooling1D 或 Flatten
-
-    # 添加输出层
-    model.add(tf.keras.layers.Dense(num_classes,activation=dense_activation))
-
-    return model
-
-
 def Transformer(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
                 dense_activation):
     num_heads = 2
@@ -910,34 +665,6 @@ def Transformer(input_shape,num_layers,num_classes,num_filters,kernel_size,strid
     outputs = Dense(num_classes,activation=dense_activation)(x)
 
     model = tf.keras.Model(inputs=inputs,outputs=outputs,name="Transformer")
-    return model
-
-
-def Resnet(input_shape,num_layers,num_classes,num_filters,kernel_size,strides,dropout_rate,layer_activation,
-           dense_activation):
-    num_blocks = 4
-    inputs = Input(shape=input_shape,name='Resnet')
-    x = Conv1D(filters=num_filters,kernel_size=kernel_size,strides=strides,padding='same')(inputs)
-    x = BatchNormalization()(x)
-    x = Activation(layer_activation)(x)
-
-    for i in range(num_blocks):
-        # Shortcut connection
-        shortcut = x
-
-        # Residual block
-        x = Conv1D(filters=num_filters,kernel_size=kernel_size,strides=strides,padding='same')(x)
-        x = BatchNormalization()(x)
-        x = Activation(layer_activation)(x)
-        x = Conv1D(filters=num_filters,kernel_size=kernel_size,strides=strides,padding='same')(x)
-        x = BatchNormalization()(x)
-        x = Add()([shortcut,x])
-        x = Activation(layer_activation)(x)
-
-    x = GlobalAveragePooling1D()(x)
-    outputs = Dense(num_classes,activation=dense_activation)(x)
-
-    model = tf.keras.Model(inputs=inputs,outputs=outputs,name="Resnet")
     return model
 
 
@@ -1046,7 +773,7 @@ def get_text(request):
 @csrf_exempt
 def train(request):
     if request.method == 'POST' and request.POST.get('id') == '0':
-        global df,classes,img_path,label1,label2,data_type,model_name
+        global df,classes,img_path,label1,label2,data_type,model_name,model_path
         global accuracy_g,epoch_g,loss_g,logs_g,val_accuracy_g,val_loss_g,accuracy_score_g
         global optimizer,l_r
         epoch_g = 0
@@ -1074,9 +801,11 @@ def train(request):
             X_train,X_test,y_train,y_test,input_shape = img_process(img_path,label1,label2)
         elif data_type == 3:
             if model_selection == 3:
-                show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs)
+                model_path = show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,
+                                           num_epochs)
             elif model_selection == 4:
-                show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,num_epochs)
+                model_path = show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learning_rate,
+                                         num_epochs)
             # print("loss_g变成",loss_g)
             # gc.collect()
             return HttpResponse("TRAIN COMPLETED")
@@ -1735,58 +1464,93 @@ def ensemble_data(request):
     return JsonResponse(data)
 
 
+# TODO 针对不同模型不同情况的处理
 @csrf_exempt
 def generate_pdf(request):
     import json
     data = json.loads(request.body)
     generate_type = data.get('type')  # 模型训练类型train/test
-    model_type = " "  # 模型类型
-    model_name = data.get('model_name')  # 模型名称
-    loss_pic = data.get('pic')  # 训练生成的图像
-    parameter_data = data.get('parameter_data')
-    parameter_data = json.loads(parameter_data)
-    loss = parameter_data.get('loss')
-    print(loss)
-    pdf_file_name = generate_type+"_"+model_type+"_"+model_name+"_"+str(int(datetime.now().timestamp()))+".pdf"
-    pdf_file_path = Path(__file__).resolve().parent
-    pdf_file_path = os.path.join(pdf_file_path,"export",pdf_file_name)
-    print(pdf_file_path)
-    print("-----")
-    print(loss_pic)
-    print("-----")
-    pdf_file = canvas.Canvas(pdf_file_path)
-    pdf_file.setFont("Helvetica",12)
-    prefix = "data:image/png;base64,"
-    if loss_pic.startswith(prefix):
-        loss_pic = loss_pic[len(prefix):]
-    loss_pic = base64.b64decode(loss_pic)
-    # 使用 PIL 加载图片
-    image = Image.open(BytesIO(loss_pic))
-    # 创建一个白色背景的图片
-    white_background = Image.new("RGBA",image.size,"WHITE")
-    # 将原图粘贴到白色背景上
-    white_background.paste(image,(0,0),image)
-    # 转换为 RGB 模式
-    white_background = white_background.convert("RGB")
-    # 保存到 BytesIO
-    output = BytesIO()
-    white_background.save(output,format="PNG")
-    output.seek(0)
-    loss_pic = ImageReader(output)
+    if generate_type == 'train':
+        model_type = model_selection_dict[model_selection]  # 模型类型
+        if model_type == 'deeponet':
+            model_name = data.get('model_name')  # 模型名称
+            loss_pic = data.get('pic')  # 训练生成的图像
+            parameter_data = data.get('parameter_data')
+            parameter_data = json.loads(parameter_data)
+            loss = parameter_data.get('loss')
+            print(loss)
+            pdf_file_name = generate_type+"_"+model_type+"_"+model_name+"_"+str(int(datetime.now().timestamp()))+".pdf"
+            pdf_file_path = Path(__file__).resolve().parent
+            pdf_file_path = os.path.join(pdf_file_path,"export",pdf_file_name)
+            print(pdf_file_path)
+            print("-----")
+            print(loss_pic)
+            print("-----")
+            pdf_file = canvas.Canvas(pdf_file_path)
+            pdf_file.setFont("Helvetica",12)
+            prefix = "data:image/png;base64,"
+            if loss_pic.startswith(prefix):
+                loss_pic = loss_pic[len(prefix):]
+            loss_pic = base64.b64decode(loss_pic)
+            # 使用 PIL 加载图片
+            image = Image.open(BytesIO(loss_pic))
+            # 创建一个白色背景的图片
+            white_background = Image.new("RGBA",image.size,"WHITE")
+            # 将原图粘贴到白色背景上
+            white_background.paste(image,(0,0),image)
+            # 转换为 RGB 模式
+            white_background = white_background.convert("RGB")
+            # 保存到 BytesIO
+            output = BytesIO()
+            white_background.save(output,format="PNG")
+            output.seek(0)
+            loss_pic = ImageReader(output)
 
-    pdf_file.drawString(100,750,"Hello, ReportLab!")
-    pdf_file.drawImage(loss_pic,50,50,
-                       width=loss_pic.getSize()[0]/2,
-                       height=loss_pic.getSize()[1]/2,
-                       preserveAspectRatio=True)
-    pdf_file.save()
-    # 打开模型文件并读取内容
-    with open(pdf_file_path,'rb') as f:
-        model_content = f.read()
-    # 构建HTTP响应
-    response = HttpResponse(model_content,content_type='application/octet-stream')
-    # 设置响应头，指示浏览器下载文件
-    response['Content-Disposition'] = f'attachment; filename="{pdf_file_name}"'
-    # 跨域问题
-    response['Access-Control-Allow-Origin'] = '*'
-    return response
+            index = 750
+            pdf_file.drawString(100,index,"Model Type: "+model_type)
+            index -= 20
+            pdf_file.drawString(100,index,"------------------------------------------")
+            index -= 20
+            pdf_file.drawString(100,index,"Model Name: "+model_name)
+            index -= 20
+            pdf_file.drawString(100,index,"Num Epoch: "+str(parameter_data.get('epoch')))
+            index -= 20
+            pdf_file.drawString(100,index,"Optimizer: "+str(parameter_data.get('optimizer')))
+            index -= 20
+            pdf_file.drawString(100,index,"Branch_layers: "+str(parameter_data.get('branch_layers')))
+            index -= 20
+            pdf_file.drawString(100,index,"Trunk_layers: "+str(parameter_data.get('trunk_layers')))
+            index -= 20
+            pdf_file.drawString(100,index,"Seed: "+str(parameter_data.get('seed')))
+            index -= 20
+            pdf_file.drawString(100,index,"Dense_activation: "+str(parameter_data.get('dense_activation')))
+            index -= 20
+            pdf_file.drawString(100,index,"Initializer: "+str(parameter_data.get('initializer')))
+            index -= 20
+            pdf_file.drawString(100,index,"------------------------------------------")
+            index -= 20
+            pdf_file.drawString(100,index,"Train logs:")
+            for obj in loss:
+                index -= 20
+                pdf_file.drawString(100,index,"Epoch: "+str(obj.get('epoch'))+", Loss:"+str(obj.get('loss')))
+            index -= 20
+            pdf_file.drawString(100,index,"------------------------------------------")
+            index -= 50
+            pdf_file.drawImage(loss_pic,100,index-loss_pic.getSize()[1]/2,
+                               width=loss_pic.getSize()[0]/2,
+                               height=loss_pic.getSize()[1]/2,
+                               preserveAspectRatio=True)
+            pdf_file.save()
+            # 打开模型文件并读取内容
+            with open(pdf_file_path,'rb') as f:
+                model_content = f.read()
+            # 构建HTTP响应
+            response = HttpResponse(model_content,content_type='application/octet-stream')
+            # 设置响应头，指示浏览器下载文件
+            response['Content-Disposition'] = f'attachment; filename="{pdf_file_name}"'
+            # 跨域问题
+            response['Access-Control-Allow-Origin'] = '*'
+            return response
+    elif generate_type == 'test':
+
+        return

@@ -1,20 +1,17 @@
+import os
+import time
 from datetime import datetime
+
+import matplotlib.pyplot as plt
 # 单自由度
 import torch
-import matplotlib.pyplot as plt
-from scipy.io import loadmat
-from tqdm import tqdm
-from torch import optim
 import torch.nn as nn
-from app.Operator_network.Models.deeponet import DeepOnet
-import numpy as np
-import time
-import os
-import argparse
-from app.Operator_network.metrics import *
 from django.http import HttpRequest
+from torch import optim
+
 from app import views
-from app.DeepOnet.deeponet import Model
+from app.Operator_network.Models.deeponet import DeepOnet
+from app.Operator_network.metrics import *
 
 re = HttpRequest()
 device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
@@ -119,10 +116,9 @@ def show_deeponet(df,seed,branch_layers,trunk_layers,activation,initializer,lear
     print('loss数据',loss_epoches)
 
     # # # #save model
-    model_path = os.path.join('app/model_temp/deeponet_zhouqi_5s_0.005.pth')
+    model_path = os.path.join('app/model_temp/deeponet_zhouqi_5s_0.005'+str(int(datetime.now().timestamp()))+'.pth')
     torch.save(model.state_dict(),model_path)
-
-
+    return model_path
 
 
 def show_deeponet_test(data_path,model_path):

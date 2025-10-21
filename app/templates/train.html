@@ -111,7 +111,7 @@
                     <div class="mb-3">
                         <label for="optimizer" class="form-label">选择优化器：</label>
                         <select class="form-select shadow-lg" aria-label="Default select example" id="optimizer">
-                            <option selected value="0">Adam</option>
+                            <option selected value="Adam">Adam</option>
                         </select>
                     </div>
                 </div>
@@ -254,6 +254,7 @@
     let timeoutIds = []
     let chart = null
     let parameter_data = []
+    let model_selection = 0
     change()
 
     //设置定时任务
@@ -287,8 +288,8 @@
     }
 
     function change() {
-        let mode_selection = getRenderData('model_selection')
-        console.log(mode_selection)
+        model_selection = getRenderData('model_selection')
+        console.log(model_selection)
     }
 
     function get_username() {
@@ -573,21 +574,78 @@
         const myChart = new Chart(ctx, config);
     }
 
+    // 下载模型权重
     function downloadBtn() {
         $('#downloadBtn').click(function () {
-            // 发起下载模型的请求
-            window.location.href = '/download_model/';
+            getParameterData()
+            $.ajax({
+                url: '/download_model/',
+                type: "post",
+                contentType: "application/json",
+                xhrFields: {
+                    responseType: 'blob' // 设置响应类型为 blob
+                },
+                success: function (blob, textStatus, jqXHR) {
+                    const contentDisposition = jqXHR.getResponseHeader('Content-Disposition');
+                    const fileName = contentDisposition.split('filename=')[1].replace(/"/g, '');
+                    console.log(fileName)
+                    console.log(blob.size)
+                    // 创建一个 URL 对象
+                    const url = window.URL.createObjectURL(blob);
+                    // 创建一个隐藏的 <a> 标签
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName; // 设置下载文件名
+                    document.body.appendChild(link);
+                    link.click(); // 模拟点击
+                    document.body.removeChild(link); // 移除临时创建的 <a> 标签
+                    window.URL.revokeObjectURL(url); // 释放 URL 对象
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                    console.error('Status Code:', jqXHR.status);
+                    console.error('Response Text:', jqXHR.responseText);
+                    console.error('Headers:', jqXHR.getAllResponseHeaders());
+                }
+            });
         });
     }
 
     // 发起导出pdf的请求
     function getParameterData() {
         {# TODO:根据不同模型类型获取不同参数 #}
-        parameter_data = JSON.stringify({
-            'loss': logs
-        })
+        if (model_selection === 0) {//CNN 1D
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 1) {//LSTM
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 2) {//Transformer
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 3) {//deeponet
+            parameter_data = JSON.stringify({
+                'epochs': $("#num_epochs").val(),
+                'learning_rate': $("#learning_rate").val(),
+                'optimizer': $("#optimizer").val(),
+                'branch_layers': $("#branch_layers").val(),
+                'trunk_layers': $("#trunk_layers").val(),
+                'seed': $("#seed").val(),
+                'dense_activation': $("#dense_activation").val(),
+                'initializer': $("#initializer").val(),
+                'model_name': $("#model_name").val(),
+                'loss': logs
+            })
+        } else if (model_selection === 4) {//mionet
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 5) {//QL
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 6) {//PPO
+            parameter_data = JSON.stringify({})
+        } else if (model_selection === 7) {//DDPG
+            parameter_data = JSON.stringify({})
+        }
+
     }
 
+    // 下载训练日志
     function downloadLog() {
         $('#downloadLog').click(function () {
             getParameterData()

@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="Feats:新增将训练Loss图像导入至pdf的功能。" />
+    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="Feats:更新.gitignore">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_deeponet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/train.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/train.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,32 +40,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "TODO_SCOPE": "All Places",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/PycharmProject/DL/app/static/img",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/PycharmProject/DL/app/pinn_mionet/model_save&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\PycharmProject\DL\app\pinn_mionet\model_save" />
       <recent name="E:\PycharmProject\DL\app\static\img" />
       <recent name="E:\PycharmProject\DL" />
       <recent name="E:\PycharmProject\DL\app\static\img_backup" />
       <recent name="E:\PycharmProject\DL\app\pinn_mionet" />
-      <recent name="E:\PycharmProject\DL\app\pinn_mionet\config" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\PycharmProject\DL\app" />
@@ -290,7 +296,8 @@
       <workItem from="1760442752551" duration="2327000" />
       <workItem from="1760447095781" duration="5485000" />
       <workItem from="1760492854209" duration="606000" />
-      <workItem from="1760946496784" duration="5987000" />
+      <workItem from="1760946496784" duration="6202000" />
+      <workItem from="1761008589327" duration="6149000" />
     </task>
     <task id="LOCAL-00001" summary="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
       <created>1753843130837</created>
@@ -327,7 +334,14 @@
       <option name="project" value="LOCAL" />
       <updated>1760952498212</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Feats:更新.gitignore">
+      <created>1760952731475</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1760952731475</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -381,7 +395,8 @@
     <MESSAGE value="BugFix:修复matplotlib使用Tkinter后端导致的线程Bug." />
     <MESSAGE value="BugFix:新增导出训练Loss日志的文件生成功能。" />
     <MESSAGE value="Feats:新增将训练Loss图像导入至pdf的功能。" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feats:新增将训练Loss图像导入至pdf的功能。" />
+    <MESSAGE value="Feats:更新.gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feats:更新.gitignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -395,11 +410,6 @@
           <url>file://$PROJECT_DIR$/app/DeepOnet/train_tang.py</url>
           <line>106</line>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/views.py</url>
-          <line>1745</line>
-          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
