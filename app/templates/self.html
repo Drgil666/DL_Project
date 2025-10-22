@@ -14,6 +14,20 @@
             padding: 0; /* 清除默认的页面填充 */
             display: none; /* 默认隐藏 */
         }
+
+        .card {
+            transition: all 0.3s ease;
+        }
+
+        .list-group-flush {
+            transition: all 0.3s ease;
+        }
+
+        .hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
     </style>
 </head>
 <body>
@@ -23,25 +37,28 @@
         <i class="bi bi-stack"></i> Deep Learning
     </div>
     <div>
-        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i class="bi bi-person-circle" id="userDropdownIcon"></i>
-        <span id="username"></span></button>
+        <button class="btn btn-dark btn-sm fw-bold" onclick="navigateTo('navigation.html')"><i
+                class="bi bi-person-circle" id="userDropdownIcon"></i>
+            <span id="username"></span></button>
     </div>
 </div>
 
 <div class="container mt-5">
-    <div class="card shadow-lg" > <!-- 初始隐藏 -->
+    <div class="card shadow-lg" id="csv-card">
         <div class="card-header">
-            <h5 class="card-title">Uploaded CSV Files</h5>
+            <h5 class="card-title" id="toggle-list">Uploaded CSV Files</h5>
         </div>
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" id="csv-list">
             {% for file in csv_files %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <i class="bi bi-file-earmark-spreadsheet me-2"></i>
-                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded at: {{ file.uploaded_at }}
+                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded
+                        at: {{ file.uploaded_at }}
                     </div>
                     <div>
-                       <a href="{% url 'download_csv' file_id=file.id %}" download="{{ file.file_name }}" class="btn btn-primary btn-sm">Download</a>
+                        <a href="{% url 'download_csv' file_id=file.id %}" download="{{ file.file_name }}"
+                           class="btn btn-primary btn-sm">Download</a>
                     </div>
                 </li>
             {% endfor %}
@@ -50,19 +67,45 @@
 </div>
 
 <div class="container mt-5">
-    <div class="card shadow-lg" > <!-- 初始隐藏 -->
+    <div class="card shadow-lg" id="img-card">
         <div class="card-header">
-            <h5 class="card-title">Uploaded IMG Files</h5>
+            <h5 class="card-title" id="toggle-img-list">Uploaded IMG Files</h5>
         </div>
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" id="img-list" class="hidden">
             {% for file in img_files %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <i class="bi bi-file-earmark-spreadsheet me-2"></i>
-                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded at: {{ file.uploaded_at }}
+                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded
+                        at: {{ file.uploaded_at }}
                     </div>
                     <div>
-                       <a href="{% url 'download_img' file_id=file.id %}" download="{{ file.file_name }}" class="btn btn-primary btn-sm">Download</a>
+                        <a href="{% url 'download_img' file_id=file.id %}" download="{{ file.file_name }}"
+                           class="btn btn-primary btn-sm">Download</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <div class="card shadow-lg" id="model-card">
+        <div class="card-header">
+            <h5 class="card-title" id="toggle-model-list">Uploaded PDF Files</h5>
+        </div>
+        <ul class="list-group list-group-flush" id="model-list" class="hidden">
+            {% for file in model_files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="bi bi-file-earmark-binary me-2"></i>
+                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded
+                        at: {{ file.uploaded_at }}
+                    </div>
+                    <div>
+                        <a href="{% url 'download_keras' file_id=file.id %}" download="{{ file.file_name }}"
+                           class="btn btn-primary btn-sm">Download</a>
                     </div>
                 </li>
             {% endfor %}
@@ -71,35 +114,118 @@
 </div>
 
 <div class="container mt-5">
-    <div class="card shadow-lg"> <!-- 初始隐藏 -->
+    <div class="card shadow-lg" id="pdf-card">
         <div class="card-header">
-            <h5 class="card-title">Uploaded Model Files</h5>
+            <h5 class="card-title" id="toggle-pdf-list">Uploaded Model Files</h5>
         </div>
-        <ul class="list-group list-group-flush">
-            {% for file in model_files %}
+        <ul class="list-group list-group-flush" id="pdf-list" class="hidden">
+            {% for file in pdf_files %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <i class="bi bi-file-earmark-binary me-2"></i>
-                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded at: {{ file.uploaded_at }}
+                        {{ file.file_name }} - Size: {{ file.file_size|filesizeformat }} - Uploaded
+                        at: {{ file.uploaded_at }}
                     </div>
                     <div>
-                        <a href="{% url 'download_keras' file_id=file.id %}" download="{{ file.file_name }}" class="btn btn-primary btn-sm">Download</a>
+                        <a href="{% url 'download_pdf' file_id=file.id %}" download="{{ file.file_name }}"
+                           class="btn btn-primary btn-sm">Download</a>
                     </div>
                 </li>
             {% endfor %}
         </ul>
     </div>
 </div>
-
 
 <script>
     $(function () {
         fade()
         get_username()
+        set_csv()
+        set_img()
+        set_model()
     })
+
     // 页面加载完成后执行动画
     function fade() {
         $("body").fadeIn(600);
+    }
+
+    function set_csv() {
+        document.getElementById('toggle-list').addEventListener('click', function () {
+            var card = document.getElementById('csv-card');
+            var list = document.getElementById('csv-list');
+            if (list.classList.contains('hidden')) {
+                // Show the list
+                list.style.display = 'block';
+                setTimeout(function () {
+                    list.style.opacity = 1;
+                    list.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 0.5rem 1rem rgba(0, 0, 0, 0.15)';
+                }, 10);
+                list.classList.remove('hidden');
+            } else {
+                // Hide the list
+                list.style.opacity = 0;
+                list.style.transform = 'translateY(-10px)';
+                setTimeout(function () {
+                    list.style.display = 'none';
+                    list.classList.add('hidden');
+                    card.style.boxShadow = 'none';
+                }, 300);
+            }
+        });
+    }
+
+    function set_img() {
+        document.getElementById('toggle-img-list').addEventListener('click', function () {
+            var card = document.getElementById('img-card');
+            var list = document.getElementById('img-list');
+            if (list.classList.contains('hidden')) {
+                // Show the list
+                list.style.display = 'block';
+                setTimeout(function () {
+                    list.style.opacity = 1;
+                    list.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 0.5rem 1rem rgba(0, 0, 0, 0.15)';
+                }, 10);
+                list.classList.remove('hidden');
+            } else {
+                // Hide the list
+                list.style.opacity = 0;
+                list.style.transform = 'translateY(-10px)';
+                setTimeout(function () {
+                    list.style.display = 'none';
+                    list.classList.add('hidden');
+                    card.style.boxShadow = 'none';
+                }, 300);
+            }
+        });
+    }
+
+    function set_model() {
+        document.getElementById('toggle-pdf-list').addEventListener('click', function () {
+            var card = document.getElementById('pdf-card');
+            var list = document.getElementById('pdf-list');
+            if (list.classList.contains('hidden')) {
+                // Show the list
+                list.style.display = 'block';
+                setTimeout(function () {
+                    list.style.opacity = 1;
+                    list.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 0.5rem 1rem rgba(0, 0, 0, 0.15)';
+                }, 10);
+                list.classList.remove('hidden');
+            } else {
+                // Hide the list
+                list.style.opacity = 0;
+                list.style.transform = 'translateY(-10px)';
+                setTimeout(function () {
+                    list.style.display = 'none';
+                    list.classList.add('hidden');
+                    card.style.boxShadow = 'none';
+                }, 300);
+            }
+        });
     }
 
     function get_username() {

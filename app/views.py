@@ -50,7 +50,7 @@ from app.Operator_network.train_pinn_mionet import show_pinn_mionet_test
 from app.Operator_network.train_ppo import show_PPO
 from app.Operator_network.train_ql import show_QL
 from app.Operator_network.train_transformer import show_transformer,show_transformer_test
-from app.models import RegistrationForm,CSVFile,MODELFile,IMGFile
+from app.models import RegistrationForm,CSVFile,MODELFile,IMGFile,PDFFile
 
 # global data
 df = pd.DataFrame()
@@ -91,6 +91,7 @@ formula = ''
 final_parameters = ''
 weight_log = []
 model_path = ''
+user = ''
 model_selection_dict = ["CNN_1D","LSTM","Transformer","deeponet","mionet","QL","PPO","DDPG"]
 model_introduction = {
     "CNN 1D":
@@ -556,7 +557,6 @@ def model_compile(X_train,X_test,y_train,y_test,model,optimizer_input,l_r_input,
     return history,model,y_test,X_test,path
 
 
-
 def download_model(request):
     # 模型文件路径
     global model_path,model_name
@@ -671,7 +671,7 @@ def Transformer(input_shape,num_layers,num_classes,num_filters,kernel_size,strid
 # upload跳转到train页面的逻辑
 def upload(request):
     if request.method == 'POST':
-        global df,label,label1,label2,model_selection,data_type,img_path
+        global df,label,label1,label2,model_selection,data_type,img_path,user
         file = request.FILES['data_File']
         label = request.POST.get('label')
         label1 = request.POST.get('label1')
@@ -1338,7 +1338,7 @@ def self(request):
     csv_files = CSVFile.objects.filter(user=current_user)
     model_files = MODELFile.objects.filter(user=current_user)
     img_files = IMGFile.objects.filter(user=current_user)
-
+    pdf_files = PDFFile.objects.filter(user=current_user)
     # 计算文件大小并将其添加到文件对象中
     for file_obj in csv_files:
         file_obj.file_size = os.path.getsize(file_obj.file.path)
@@ -1352,14 +1352,20 @@ def self(request):
         file_obj.file_size = os.path.getsize(file_obj.file.path)
         file_obj.save()
         file_obj.icon_class = get_file_icon(file_obj.file.name)
-
+    for file_obj in pdf_files:
+        file_obj.file_size = os.path.getsize(file_obj.file.path)
+        file_obj.save()
+        file_obj.icon_class = get_file_icon(file_obj.file.name)
     csv_files = reversed(csv_files)
     model_files = reversed(model_files)
     img_files = reversed(img_files)
-
+    pdf_files = reversed(pdf_files)
     # 从数据库中检索所有文件对象
     return render(request,'self.html',
-                  {'csv_files':csv_files,'model_files':model_files,'img_files':img_files})
+                  {'csv_files':csv_files,
+                   'model_files':model_files,
+                   'img_files':img_files,
+                   'pdf_files':pdf_files})
 
 
 def download_csv(request,file_id):
@@ -1403,6 +1409,19 @@ def download_img(request,file_id):
 
     return response
 
+
+def download_pdf(request,file_id):
+    # 通过文件ID获取文件对象
+    file = get_object_or_404(PDFFile,pk=file_id)
+
+    # 打开文件并将其内容读取到HttpResponse中
+    with open(file.file.path,'rb') as f:
+        response = HttpResponse(f.read(),content_type='application/octet-stream')
+
+    # 设置响应的文件名（可选）
+    response['Content-Disposition'] = f'attachment; filename="{file.file_name}"'
+
+    return response
 
 def warning(request):
     return render(request,'warning.html')
@@ -1468,6 +1487,7 @@ def ensemble_data(request):
 @csrf_exempt
 def generate_pdf(request):
     import json
+    global user
     data = json.loads(request.body)
     generate_type = data.get('type')  # 模型训练类型train/test
     if generate_type == 'train':
@@ -1544,6 +1564,7 @@ def generate_pdf(request):
             # 打开模型文件并读取内容
             with open(pdf_file_path,'rb') as f:
                 model_content = f.read()
+            PDFFile.objects.create(user=user,file=pdf_file_path,file_name=pdf_file_name)
             # 构建HTTP响应
             response = HttpResponse(model_content,content_type='application/octet-stream')
             # 设置响应头，指示浏览器下载文件

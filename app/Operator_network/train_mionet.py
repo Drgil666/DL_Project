@@ -1,6 +1,7 @@
 import os
 # import matplotlib.pyplot as plt
 import time
+from datetime import datetime
 
 import torch
 import torch.nn as nn
@@ -115,7 +116,7 @@ def show_mionet(df,seed,branch_layers,trunk_layers,activation,initializer,learni
     views.loss_g = loss_epoches
     print('loss数据', loss_epoches)
     '''save model'''
-    model_path = os.path.join('app/model_temp/MIOnet_x_10s_0.05.pth')
+    model_path = os.path.join('app/model_temp/MIOnet_x_10s_0.05'+str(int(datetime.now().timestamp()))+'.pth')
     torch.save(model.state_dict(), model_path)
     return model_path
     '''load test dataset'''

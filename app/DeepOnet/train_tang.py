@@ -1,18 +1,16 @@
 '''柔性翻板数据(唐工)'''
-import base64
-from io import BytesIO
+
+import matplotlib
+
+matplotlib.use('Agg')
 import torch
-from torch.optim.lr_scheduler import ReduceLROnPlateau
-from tqdm import tqdm
 from torch import optim
 import torch.nn as nn
 from app.DeepOnet.deeponet import Model
-import numpy as np
 import matplotlib.pyplot as plt
 import os
 import time
 from app.DeepOnet.metrics import *
-import pandas as pd
 from django.http import HttpRequest
 
 re = HttpRequest()

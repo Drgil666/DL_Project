@@ -14,9 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
-from app import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path
+
+from app import views
 
 urlpatterns = [
     path('',views.index,name='index'),
@@ -39,6 +40,7 @@ urlpatterns = [
     path('download_csv/<int:file_id>/',views.download_csv,name='download_csv'),
     path('download_keras/<int:file_id>/',views.download_keras,name='download_keras'),
     path('download_img/<int:file_id>/',views.download_img,name='download_img'),
+    path('download_pdf/<int:file_id>/',views.download_pdf,name='download_pdf'),
     path('warning/',views.warning,name='warning'),
     path('navigation/',views.navigation,name='navigation'),
     path('parameter_identification/',views.parameter_identification,name='parameter_identification'),
