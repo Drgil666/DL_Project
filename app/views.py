@@ -1555,7 +1555,7 @@ def generate_pdf(request):
                 pdf_file.drawString(100,index,"Epoch: "+str(obj.get('epoch'))+", Loss:"+str(obj.get('loss')))
             index -= 20
             pdf_file.drawString(100,index,"------------------------------------------")
-            index -= 50
+            index -= 20
             pdf_file.drawImage(loss_pic,100,index-loss_pic.getSize()[1]/2,
                                width=loss_pic.getSize()[0]/2,
                                height=loss_pic.getSize()[1]/2,

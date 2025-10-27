@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="Feats:修改部分页面跳转逻辑，实现DeeponNet的训练界面日志导出与模型下载功能。">
+    <list default="true" id="10e1dfcf-2433-4e78-ba7c-26d27f74418a" name="Changes" comment="Feats:更新pdf中训练图标生成的布局。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DL/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/DL/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DeepOnet/train_tang.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Operator_network/train_mionet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/self.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/self.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,25 +42,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "TODO_SCOPE": "All Places",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/PycharmProject/DL/app/Operator_network/dataset",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "terminal"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/PycharmProject/DL/app/Operator_network/dataset&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\PycharmProject\DL\app\Operator_network\dataset" />
@@ -305,7 +300,8 @@
       <workItem from="1760492854209" duration="606000" />
       <workItem from="1760946496784" duration="6202000" />
       <workItem from="1761008589327" duration="6514000" />
-      <workItem from="1761114643112" duration="7043000" />
+      <workItem from="1761114643112" duration="7660000" />
+      <workItem from="1761528796199" duration="965000" />
     </task>
     <task id="LOCAL-00001" summary="Feats:新增PINN_MIONET支持。&#10;BugFix:修复子进程轮询训练结果导致的bug，修复读取训练图表时缓存未刷新的问题。">
       <created>1753843130837</created>
@@ -356,7 +352,21 @@
       <option name="project" value="LOCAL" />
       <updated>1761015105096</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Feats:新增pdf数据库存储，文件管理界面的优化，文件管理界面对pdf文件导出的支持。">
+      <created>1761122100490</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1761122100491</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Feats:更新.gitignore文件">
+      <created>1761122159822</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1761122159822</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -412,7 +422,10 @@
     <MESSAGE value="Feats:新增将训练Loss图像导入至pdf的功能。" />
     <MESSAGE value="Feats:更新.gitignore" />
     <MESSAGE value="Feats:修改部分页面跳转逻辑，实现DeeponNet的训练界面日志导出与模型下载功能。" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feats:修改部分页面跳转逻辑，实现DeeponNet的训练界面日志导出与模型下载功能。" />
+    <MESSAGE value="Feats:新增pdf数据库存储，文件管理界面的优化，文件管理界面对pdf文件导出的支持。" />
+    <MESSAGE value="Feats:更新.gitignore文件" />
+    <MESSAGE value="Feats:更新pdf中训练图标生成的布局。" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feats:更新pdf中训练图标生成的布局。" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -426,8 +439,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/views.py</url>
-          <line>1416</line>
-          <option name="timeStamp" value="19" />
+          <line>1414</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
