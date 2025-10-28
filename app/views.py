@@ -92,6 +92,7 @@ final_parameters = ''
 weight_log = []
 model_path = ''
 user = ''
+upload_file_name = ''
 model_selection_dict = ["CNN_1D","LSTM","Transformer","deeponet","mionet","QL","PPO","DDPG"]
 model_introduction = {
     "CNN 1D":
@@ -671,7 +672,7 @@ def Transformer(input_shape,num_layers,num_classes,num_filters,kernel_size,strid
 # upload跳转到train页面的逻辑
 def upload(request):
     if request.method == 'POST':
-        global df,label,label1,label2,model_selection,data_type,img_path,user
+        global df,label,label1,label2,model_selection,data_type,img_path,user,upload_file_name
         file = request.FILES['data_File']
         label = request.POST.get('label')
         label1 = request.POST.get('label1')
@@ -684,6 +685,7 @@ def upload(request):
         print(data_type)
         user = request.user
         file_name = file.name
+        upload_file_name = file_name
         if data_type == 1:
             df = process_uploaded_csv(file)
             csv_file_obj = CSVFile.objects.create(user=user,file=file,file_name=file_name)
@@ -1423,6 +1425,7 @@ def download_pdf(request,file_id):
 
     return response
 
+
 def warning(request):
     return render(request,'warning.html')
 
@@ -1525,9 +1528,10 @@ def generate_pdf(request):
             white_background.save(output,format="PNG")
             output.seek(0)
             loss_pic = ImageReader(output)
-
             index = 750
             pdf_file.drawString(100,index,"Model Type: "+model_type)
+            index -= 20
+            pdf_file.drawString(100,index,"Dataset fileName: "+upload_file_name)
             index -= 20
             pdf_file.drawString(100,index,"------------------------------------------")
             index -= 20
@@ -1551,11 +1555,21 @@ def generate_pdf(request):
             index -= 20
             pdf_file.drawString(100,index,"Train logs:")
             for obj in loss:
-                index -= 20
+                if index <= 20+20:
+                    pdf_file.showPage()
+                    index = 750
+                else:
+                    index -= 20
                 pdf_file.drawString(100,index,"Epoch: "+str(obj.get('epoch'))+", Loss:"+str(obj.get('loss')))
-            index -= 20
+            if index <= 20+20:
+                pdf_file.showPage()
+                index = 750
+            else:
+                index -= 20
             pdf_file.drawString(100,index,"------------------------------------------")
-            index -= 20
+            if index-20 >= loss_pic.getSize()[1]/2:
+                pdf_file.showPage()
+                index = 750
             pdf_file.drawImage(loss_pic,100,index-loss_pic.getSize()[1]/2,
                                width=loss_pic.getSize()[0]/2,
                                height=loss_pic.getSize()[1]/2,
@@ -1573,5 +1587,4 @@ def generate_pdf(request):
             response['Access-Control-Allow-Origin'] = '*'
             return response
     elif generate_type == 'test':
-
         return
