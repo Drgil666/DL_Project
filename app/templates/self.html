@@ -93,10 +93,10 @@
 <div class="container mt-5">
     <div class="card shadow-lg" id="model-card">
         <div class="card-header">
-            <h5 class="card-title" id="toggle-model-list">Uploaded PDF Files</h5>
+            <h5 class="card-title" id="toggle-model-list">Created PDF Files</h5>
         </div>
         <ul class="list-group list-group-flush" id="model-list" class="hidden">
-            {% for file in model_files %}
+            {% for file in pdf_files %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <i class="bi bi-file-earmark-binary me-2"></i>
@@ -104,7 +104,7 @@
                         at: {{ file.uploaded_at }}
                     </div>
                     <div>
-                        <a href="{% url 'download_keras' file_id=file.id %}" download="{{ file.file_name }}"
+                        <a href="{% url 'download_pdf' file_id=file.id %}" download="{{ file.file_name }}"
                            class="btn btn-primary btn-sm">Download</a>
                     </div>
                 </li>
@@ -119,7 +119,7 @@
             <h5 class="card-title" id="toggle-pdf-list">Uploaded Model Files</h5>
         </div>
         <ul class="list-group list-group-flush" id="pdf-list" class="hidden">
-            {% for file in pdf_files %}
+            {% for file in model_files %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <i class="bi bi-file-earmark-binary me-2"></i>
@@ -127,7 +127,7 @@
                         at: {{ file.uploaded_at }}
                     </div>
                     <div>
-                        <a href="{% url 'download_pdf' file_id=file.id %}" download="{{ file.file_name }}"
+                        <a href="{% url 'download_keras' file_id=file.id %}" download="{{ file.file_name }}"
                            class="btn btn-primary btn-sm">Download</a>
                     </div>
                 </li>

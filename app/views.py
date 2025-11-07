@@ -810,6 +810,13 @@ def train(request):
                                          num_epochs)
             # print("loss_g变成",loss_g)
             # gc.collect()
+            user = request.user
+            with open(model_path,'rb') as f:
+                model_content = f.read()
+            file_name = os.path.basename(model_path)
+            model_file_obj = MODELFile.objects.create(user=user,file=ContentFile(model_content,name=file_name),
+                                                      file_name=file_name,classes=classes)
+
             return HttpResponse("TRAIN COMPLETED")
         model = model_choice(model_selection,input_shape,n_layers,n_classes,n_filters,k_size,step,
                              d_r,l_a,d_a)
@@ -826,6 +833,7 @@ def train(request):
         file_name = os.path.basename(model_path)
         model_file_obj = MODELFile.objects.create(user=user,file=ContentFile(model_content,name=file_name),
                                                   file_name=file_name,classes=classes)
+
         accuracy_g = history.history['accuracy']
         print(accuracy_g)
         loss_g = history.history['loss']
@@ -1199,8 +1207,10 @@ def ensemble(request):
         with open(path,'rb') as f:
             model_content = f.read()
         file_name = os.path.basename(path)
-        model_file_obj = MODELFile.objects.create(user=user,file=ContentFile(model_content,name=file_name),
-                                                  file_name=file_name,classes=class_l)
+        model_file_obj = MODELFile.objects.create(user=user,
+                                                  file=model_content,
+                                                  file_name=file_name,
+                                                  classes=classes)
 
         return JsonResponse({'message':'Upload successful'},status=200)
     else:
